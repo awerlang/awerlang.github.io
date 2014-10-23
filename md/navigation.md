@@ -2,7 +2,7 @@
 
 [Blog](index.md)
 [Projetos](projetos.md)
-[Servi&ccedil;os](download.md)
+[Servi&ccedil;os](servicos.md)
 [Tecnologias](tecnologias.md)
 [Contato](contato.md)
-[Sobre](about.md)
+[Sobre](sobre.md)
