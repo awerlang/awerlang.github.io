@@ -1,6 +1,8 @@
 # Werlang Tecnologia
 
-[Home](home.md)
-[About](about.md)
-[Projects](projects.md)
-[Download](download.md)
+[Blog](home.md)
+[Projetos](projects.md)
+[Servi&ccedil;os](download.md)
+[Tecnologias](tecnologias.md)
+[Contato](contato.md)
+[Sobre](about.md)
