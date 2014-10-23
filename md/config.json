@@ -1,2 +1,5 @@
 {
+    "useSideMenu": true,
+    "lineBreaks": "gfm",
+    "additionalFooterText": "Copyright (c) Andr&eacute; Werlang"
 }
