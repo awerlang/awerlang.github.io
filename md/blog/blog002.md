@@ -5,7 +5,7 @@ Note: Este blog está em construção!
 
 [gimmick:yuml]( [HttpContext]uses -.->[Response] )
 
-[gimmick:yuml]([User|+Forename+;Surname;+HashedPassword;-Salt|+Login();+Logout()])
+[gimmick:yuml (type: 'class')]([User|+Forename;+Surname;+HashedPassword;-Salt])
 
 [gimmick:yuml (type: 'activity', style: 'plain') ]( `Make Coffee´->`want more coffee´ )
 
