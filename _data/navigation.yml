@@ -1,0 +1,13 @@
+# Site navigation links
+
+- title: Sobre
+  url: /sobre/
+
+- title: Blog
+  url: /posts/
+
+- title: Serviços
+  url: /theme-setup/
+
+- title: Projetos
+  url: http://mademistakes.com
