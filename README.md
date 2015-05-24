@@ -1,23 +1,28 @@
-# Minimal Mistakes
+# Werlang Tecnologia
 
-**[Minimal Mistakes](http://mmistakes.github.io/minimal-mistakes)** is a two column responsive Jekyll theme perfect for powering your GitHub hosted blog. 
+Este é o repositório da presença online de André Werlang, desenvolvedor de software. 
+This is the repository of the online presence of André Werlang, software developer.
 
-## Minimal Mistakes is all about:
+## Tecnologia
 
-* Responsive templates. Looking good on mobile, tablet, and desktop.
-* Gracefully degrading in older browsers. Compatible with Internet Explorer 8+ and all modern browsers. 
-* Minimal embellishments -- content first.
-* Optional large feature images for posts and pages.
-* Simple and clear permalink structure.
-* [Custom 404 page](http://mmistakes.github.io/minimal-mistakes/404.html) to get you started.
-* Support for Disqus Comments
+Este site está construído sobre as seguintes tecnologias e serviços:
+This site is built above the following technologies and services:
 
-![screenshot of Minimal Mistakes theme](http://mmistakes.github.io/minimal-mistakes/images/mm-theme-post-600.jpg)
+* **[Jekyll](http://jekyllrb.com/)**: gerador estático de sites;
+* **[Minimal Mistakes](http://mmistakes.github.io/minimal-mistakes)**: tema básico utilizado neste site;
+* **[GitHub Pages](https://pages.github.com/)**: CMS e hospedagem; 
+* **[Git](https://git-scm.com/)**: controle de versão; 
 
-See a [live version of Minimal Mistakes](http://mmistakes.github.io/minimal-mistakes/) hosted on GitHub.
+## License
 
-## Getting Started
+The following directories and their contents are Copyright (c) André Werlang. You may not reuse anything therein without my permission:
 
-Minimal Mistakes takes advantage of Sass and data files to make customizing easier. These features require Jekyll 2.x and will not work with older versions of Jekyll.
+* _posts/
+* serviços/
+* tecnologia;
+* projetos/
+* sobre/
+* images/
 
-To learn how to install and use this theme check out the [Setup Guide](http://mmistakes.github.io/minimal-mistakes/theme-setup/) for more information.
+All other directories and files are licensed under a 
+[Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/deed.en_US).

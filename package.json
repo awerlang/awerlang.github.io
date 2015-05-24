@@ -1,13 +1,11 @@
 {
-  "name": "minimal-mistakes-theme",
-  "author": "Michael Rose <michael@mademistakes.com>",
-  "homepage": "http://mmistakes.github.io/minima-mistakes/",
+  "homepage": "http://awerlang.github.io/",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mmistakes/minimal-mistakes.git"
+    "url": "git://github.com/awerlang/awerlang.github.io.git"
   },
   "bugs": {
-    "url": "https://github.com/mmistakes/minimal-mistakes/issues"
+    "url": "https://github.com/awerlang/awerlang.github.io/issues"
   },
   "engines": {
     "node": ">= 0.10.0"
