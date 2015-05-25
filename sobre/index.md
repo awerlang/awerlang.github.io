@@ -78,7 +78,15 @@ Espero que seja útil para você.
 
 ## Contatos
 
-<i class="fa fa-envelope-o"></i> Email: [andre@werlangtecnologia.com.br](mailto:andre@werlangtecnologia.com.br) <br>
+<script type="text/javascript">
+  setTimeout(function () {
+    var el = document.querySelector('.email a');
+    var email = ["andre", "@", "werlangtecnologia", ".com", ".br"].join("");
+    el.href = "mailto:" + email;
+    el.textContent = email;
+  }, 1000);
+</script>
+<i class="fa fa-envelope-o"></i><span class="email"> Email: <a href="mail@domain.com.br">&nbsp;</a> </span><br>
 <i class="fa fa-linkedin"></i> Linkedin: [@awerlang](https://www.linkedin.com/in/awerlang) <br>
 <i class="fa fa-github"></i> GitHub: [@awerlang](https://github.com/awerlang) <br>
 <i class="fa fa-twitter"></i> Twitter: [@awerlang](https://twitter.com/awerlang) <br>
