@@ -5,6 +5,7 @@ excerpt: "Just about everything you'll need to style in the theme: headings, par
 modified: 2015-05-26
 tags: [intro, beginner, jekyll, tutorial]
 comments: false
+draft: true
 ---
 
 This post shouldn't show up in overview pages due to its `draft` key being set.
