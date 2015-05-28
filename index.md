@@ -1,7 +1,6 @@
 ---
 layout: home
-excerpt: "A minimal Jekyll theme for your blog by designer Michael Rose."
-tags: [Jekyll, theme, responsive, blog, template]
+excerpt: "Blog e portfolio de André Werlang, desenvolvedor de software. Aqui são abordados assuntos sobre desenvolvimento de software, web, e gestão."
 image:
   feature: sample-image-1.jpg
   credit: WeGraphics
