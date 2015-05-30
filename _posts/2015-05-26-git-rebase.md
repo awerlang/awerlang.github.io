@@ -43,8 +43,10 @@ Neste momento acusou que o topo do *remote* não estava na minha versão local. 
 
 Meu erro começou nesta inocente sequência:
 
-    git pull origin master
-    git push origin master
+{% highlight %}
+git pull origin master
+git push origin master
+{% endhighlight %}
 
 GitHub atualizado e mostrando os commits que fiz. Com o detalhe que aparece um commit "merge" que eu não criei, não diretamente ao menos. Neste commit de merge, estão registrados 2 commit's como *parent*, um deles que fiz diretamente na interface do GitHub, e outro paralelo a este no repositório local.
 
@@ -73,17 +75,19 @@ No meu caso, sei que o impacto da alteração é zero (nenhuma fork do projeto).
 
 ## git push --force
 
-    git commit
-    git push origin master
-    git pull origin master
-    git push origin master
-    
-    git checkout -b rebase
-    git checkout master
-    git reset --hard HEAD~1
-    git push --force origin master
-    
-    git pull --rebase origin master
+{% highlight %}
+git commit
+git push origin master
+git pull origin master
+git push origin master
+
+git checkout -b rebase
+git checkout master
+git reset --hard HEAD~1
+git push --force origin master
+
+git pull --rebase origin master
+{% endhighlight %}
     
 ## Fechando
 
