@@ -2,7 +2,7 @@
 
 title:            André Werlang
 locale:           pt_BR
-url:              //blog.werlangtecnologia.com.br
+url:              http://blog.werlangtecnologia.com.br
 
 
 # Jekyll configuration
@@ -30,7 +30,7 @@ owner:
   avatar: bio-photo.jpg
   bio: "I'm a programmer."
   email: 
-  disqus-shortname: werlangtecnologia
+  disqus-shortname: #werlangtecnologia
   twitter: awerlang
   facebook: #username
   google:
