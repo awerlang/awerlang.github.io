@@ -44,7 +44,7 @@ Neste momento acusou que o topo do *remote* não estava na minha versão local. 
 
 Meu erro começou nesta inocente sequência:
 
-{% highlight %}
+{% highlight batch %}
 git pull origin master
 git push origin master
 {% endhighlight %}
