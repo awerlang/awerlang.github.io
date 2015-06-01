@@ -13,8 +13,20 @@
 		position: relative;
 		margin: 0;
 		padding: 1em;
+		
+		code { 
+			display: block; 
+			white-space: pre; 
+			overflow-x: auto; 
+			word-wrap: normal; 
+		}
 	}
-	.lineno { padding-right: 24px; color: lighten(#333332,50);}
+	.lineno { 
+		display: inline-block; 
+		color: lighten(#333332,50); 
+		padding: 0 5px; 
+		border-right: 1px solid #ccc;
+	}
 	.hll { background-color: #ffffcc }
 	.c { color: #999988; font-style: italic } /* Comment */
 	.err { color: #a61717; background-color: #e3d2d2 } /* Error */

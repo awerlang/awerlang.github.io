@@ -44,7 +44,7 @@ Neste momento acusou que o topo do *remote* não estava na minha versão local. 
 
 Meu erro começou nesta inocente sequência:
 
-{% highlight batch %}
+{% highlight batch linenos %}
 git pull origin master
 git push origin master
 {% endhighlight %}
@@ -76,7 +76,7 @@ No meu caso, sei que o impacto da alteração é zero (nenhuma fork do projeto).
 
 ## git push --force
 
-{% highlight batch %}
+{% highlight batch linenos %}
 git commit
 git push origin master
 git pull origin master
