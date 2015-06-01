@@ -76,7 +76,7 @@ No meu caso, sei que o impacto da alteração é zero (nenhuma fork do projeto).
 
 ## git push --force
 
-{% highlight %}
+{% highlight batch %}
 git commit
 git push origin master
 git pull origin master
