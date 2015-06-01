@@ -26,7 +26,13 @@
 		color: lighten(#333332,50); 
 		padding: 0 5px; 
 		border-right: 1px solid #ccc;
+		-webkit-user-select: none;
+		   -moz-user-select: none;
+		        user-select: none;
 	}
+	.lineno::-moz-selection {background-color: transparent;}/* Mozilla specific */
+	.lineno::selection {background-color: transparent;} /* Other major browsers */
+
 	.hll { background-color: #ffffcc }
 	.c { color: #999988; font-style: italic } /* Comment */
 	.err { color: #a61717; background-color: #e3d2d2 } /* Error */
