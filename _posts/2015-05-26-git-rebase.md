@@ -4,6 +4,7 @@ title: Reescrevendo a historia com git rebase
 excerpt: ""
 modified: 2015-05-26
 tags: [git, github]
+categories: [git, stories]
 comments: true
 draft: true
 ---
