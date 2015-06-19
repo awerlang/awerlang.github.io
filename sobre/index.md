@@ -21,11 +21,14 @@ entre em contato comigo.
 <div>
   <style>
     .agenda {
-        width: 20px;
-        height: 20px;
+        position: relative;
+        width: 25px;
+        height: 25px;
         display: inline-block;
         background-color: lightgray;
-        box-sizing: border-box;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: bold;
     }
     
     .agenda.current {
@@ -42,20 +45,44 @@ entre em contato comigo.
     
     .agenda.blocked {
         background-color: firebrick;
+        color: white;
+    }
+    
+    .agenda:hover::after {
+        position: absolute;
+        top: 30px;
+        left: 0px;
+        padding: 2px;
+    }
+    
+    .agenda.limited:hover::after {
+        content: "Parcial";
+        background-color: coral;
+    }
+    
+    .agenda.available:hover::after {
+        content: "Disponível";
+        background-color: chartreuse;
+    }
+    
+    .agenda.blocked:hover::after {
+        content: "Indisponível";
+        background-color: firebrick;
+        color: white;
     }
   </style>
-  <div class="agenda"></div>
-  <div class="agenda"></div>
-  <div class="agenda"></div>
-  <div class="agenda"></div>
-  <div class="agenda blocked current"></div>
-  <div class="agenda blocked"></div>
-  <div class="agenda limited"></div>
-  <div class="agenda limited"></div>
-  <div class="agenda available"></div>
-  <div class="agenda available"></div>
-  <div class="agenda available"></div>
-  <div class="agenda available"></div>
+  <div class="agenda">J</div>
+  <div class="agenda">F</div>
+  <div class="agenda">M</div>
+  <div class="agenda">A</div>
+  <div class="agenda">M</div>
+  <div class="agenda blocked current">J</div>
+  <div class="agenda blocked">J</div>
+  <div class="agenda limited">A</div>
+  <div class="agenda limited">S</div>
+  <div class="agenda available">O</div>
+  <div class="agenda available">N</div>
+  <div class="agenda">D</div>
 </div>
 
 ## O que eu faço
