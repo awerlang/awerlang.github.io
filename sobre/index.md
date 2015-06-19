@@ -106,12 +106,16 @@ Espero que seja útil para você.
 ## Contatos
 
 <script type="text/javascript">
-  setTimeout(function () {
+  function revealEmail() {
     var el = document.querySelector('.email a');
     var email = ["andre", "@", "werlangtecnologia", ".com", ".br"].join("");
     el.href = "mailto:" + email;
     el.textContent = email;
-  }, 1000);
+    
+    document.removeEventListener('scroll', revealEmail);
+  }
+  
+  document.addEventListener('scroll', revealEmail);
 </script>
 <i class="fa fa-envelope-o"></i><span class="email"> Email: <a href="mail@domain.com.br">&nbsp;</a> </span><br>
 <i class="fa fa-linkedin"></i> Linkedin: [@awerlang](https://www.linkedin.com/in/awerlang) <br>
