@@ -76,13 +76,13 @@ entre em contato comigo.
   <div class="agenda">M</div>
   <div class="agenda">A</div>
   <div class="agenda">M</div>
-  <div class="agenda blocked current">J</div>
-  <div class="agenda blocked">J</div>
+  <div class="agenda">J</div>
+  <div class="agenda limited current">J</div>
   <div class="agenda limited">A</div>
   <div class="agenda limited">S</div>
-  <div class="agenda available">O</div>
-  <div class="agenda available">N</div>
-  <div class="agenda">D</div>
+  <div class="agenda limited">O</div>
+  <div class="agenda limited">N</div>
+  <div class="agenda limited">D</div>
 </div>
 
 ## O que eu faço

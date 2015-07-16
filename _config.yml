@@ -28,7 +28,7 @@ kramdown:
 owner:
   name: André Werlang
   avatar: bio-photo.jpg
-  bio: "throw new ProgrammerNotFoundException();"
+  bio: "throw new ProgrammerNotFound();"
   email: 
   disqus-shortname: #werlangtecnologia
   twitter: awerlang
