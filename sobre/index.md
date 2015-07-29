@@ -77,12 +77,22 @@ entre em contato comigo.
   <div class="agenda">A</div>
   <div class="agenda">M</div>
   <div class="agenda">J</div>
-  <div class="agenda limited current">J</div>
+  <div class="agenda limited">J</div>
   <div class="agenda limited">A</div>
   <div class="agenda limited">S</div>
   <div class="agenda limited">O</div>
   <div class="agenda limited">N</div>
   <div class="agenda limited">D</div>
+  
+  <script type="text/javascript">
+    var agenda = document.querySelectorAll('.agenda'),
+        mesAtual = new Date().getMonth();
+        
+    Array.prototype.slice.call(agenda, 0, mesAtual).forEach(function (item) {
+        item.className = 'agenda';
+    });
+    agenda[mesAtual].classList.add('current');
+  </script>
 </div>
 
 ## O que eu faço
