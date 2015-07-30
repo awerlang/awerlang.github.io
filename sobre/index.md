@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Sobre o site
+title: Sobre
 excerpt: "Informações sobre o autor do site."
 tags: [about]
 comments: false
@@ -99,7 +99,7 @@ entre em contato comigo.
 
 Atuo em projetos web, mobile, e sistemas que demandem alta escalabilidade.
 Gosto de contribuir em todas as etapas do desenvolvimento do produto, da visão até a implementação e
-automatização de testes.
+go-live.
 
 Caso seu projeto já esteja em andamento e precise de um olhar de um especialista, também posso encontrar
 uma forma de ajudar no projeto.

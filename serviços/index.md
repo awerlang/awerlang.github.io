@@ -10,11 +10,13 @@ image:
 
 {% include _toc.html %}
 
-## Serviços
+## Portfólio
 
-* Consultoria;
+* Consultoria em arquitetura de software e frameworks;
 * Design review;
 * Capacitação;
 * Pair programming;
-* Desenvolvimento;
+* Desenvolvimento de sistemas;
 * Application Lifecycle Management.
+
+Para informações sobre cada serviço, [entre em contato](/sobre/#contatos).

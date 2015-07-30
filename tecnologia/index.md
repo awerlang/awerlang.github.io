@@ -10,6 +10,19 @@ image:
 
 {% include _toc.html %}
 
+## Tecnologias
+
+<figure class="third">
+    <img src="/tecnologia/dotnet.png">
+    <img src="/tecnologia/visualstudio.png">
+    <img src="/tecnologia/sqlserver.png">
+</figure>
+<figure class="third">
+    <img src="/tecnologia/javascript.png">
+    <img src="/tecnologia/typescript.png">
+    <img src="/tecnologia/angularjs.jpg">
+</figure>
+
 ## Front-end Web
 
 Tecnologias:
@@ -47,5 +60,5 @@ Tecnologias:
 * NodeJS;
 * MongoDB, ElasticSearch.
 
-**Importante** Estas combinação são recomendadas. Consulte modificações de acordo com o projeto.
+**Importante** Estas combinações são recomendadas. Consulte modificações de acordo com o projeto.
 {: .notice}
