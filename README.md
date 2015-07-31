@@ -19,7 +19,7 @@ The following directories and their contents are Copyright (c) André Werlang. Y
 
 * _posts/
 * serviços/
-* tecnologia;
+* tecnologia/
 * projetos/
 * sobre/
 * images/

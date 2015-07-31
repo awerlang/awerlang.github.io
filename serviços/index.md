@@ -13,9 +13,10 @@ image:
 ## Portfólio
 
 * Consultoria em arquitetura de software e frameworks;
-* Design review;
 * Capacitação;
+* Design review;
 * Pair programming;
+* Projetos de P&amp;D;
 * Desenvolvimento de sistemas;
 * Application Lifecycle Management.
 

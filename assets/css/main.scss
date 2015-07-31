@@ -33,3 +33,32 @@ sitemap: false
 .article-author-side .highlight pre code {
 	word-wrap: break-word;
 }
+
+.image-wrap::before {
+    content: "Werlang Tecnologia";
+    position: relative;
+    text-align: center;
+    font-size: 4em;
+    display: block;
+    top: 70px;
+}
+
+.image-wrap > img {
+    height: 150px;
+}
+
+.home .image-wrap::before {
+    content: "Notice: This website is currently under development. Thanks for visiting, and check it back in September. --André";
+    position: absolute;
+    text-align: center;
+    font-size: 3em;
+    display: block;
+    top: 50px;
+    color: white;
+    line-height: normal;
+}  
+
+.home .image-wrap > img {
+    height: auto;
+}
+
