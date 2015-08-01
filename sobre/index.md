@@ -5,7 +5,7 @@ excerpt: "Informações sobre o autor do site."
 tags: [about]
 comments: false
 image:
-  feature: sample-image-2.jpg
+  feature: sample-image-1.jpg
   credit: WeGraphics
   creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 ---
@@ -29,6 +29,7 @@ entre em contato comigo.
         text-align: center;
         vertical-align: middle;
         font-weight: bold;
+        cursor: default;
     }
     
     .agenda.current {

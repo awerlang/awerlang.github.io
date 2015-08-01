@@ -21,6 +21,7 @@ The following directories and their contents are Copyright (c) André Werlang. Y
 * serviços/
 * tecnologia/
 * projetos/
+* wiki/
 * sobre/
 * images/
 

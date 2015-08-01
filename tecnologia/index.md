@@ -8,7 +8,12 @@ image:
   creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 ---
 
-{% include _toc.html %}
+<style>
+  article img {
+    padding: 0.5em;
+    box-sizing: border-box;    
+  }
+</style>
 
 ## Tecnologias
 
@@ -23,9 +28,9 @@ image:
     <img src="/tecnologia/angularjs.jpg">
 </figure>
 
-## Front-end Web
+---
 
-Tecnologias:
+## Front-end Web
 
 * HTML;
 * JavaScript / TypeScript, AngularJS;
@@ -35,8 +40,6 @@ Tecnologias:
 ---
 
 ## Mobile cross-platform
-
-Tecnologias:
 
 * JavaScript, HTML, CSS;
 * Apache Cordova / PhoneGap;
