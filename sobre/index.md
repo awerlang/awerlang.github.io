@@ -78,10 +78,10 @@ entre em contato comigo.
   <div class="agenda">A</div>
   <div class="agenda">M</div>
   <div class="agenda">J</div>
-  <div class="agenda limited">J</div>
-  <div class="agenda limited">A</div>
-  <div class="agenda limited">S</div>
-  <div class="agenda limited">O</div>
+  <div class="agenda">J</div>
+  <div class="agenda">A</div>
+  <div class="agenda">S</div>
+  <div class="agenda blocked">O</div>
   <div class="agenda limited">N</div>
   <div class="agenda limited">D</div>
   
