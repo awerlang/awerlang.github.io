@@ -72,18 +72,18 @@ entre em contato comigo.
         color: white;
     }
   </style>
-  <div class="agenda">J</div>
-  <div class="agenda">F</div>
-  <div class="agenda">M</div>
-  <div class="agenda">A</div>
-  <div class="agenda">M</div>
-  <div class="agenda">J</div>
-  <div class="agenda">J</div>
-  <div class="agenda">A</div>
-  <div class="agenda">S</div>
+  <div class="agenda blocked">J</div>
+  <div class="agenda blocked">F</div>
+  <div class="agenda blocked">M</div>
+  <div class="agenda blocked">A</div>
+  <div class="agenda blocked">M</div>
+  <div class="agenda blocked">J</div>
+  <div class="agenda blocked">J</div>
+  <div class="agenda blocked">A</div>
+  <div class="agenda blocked">S</div>
   <div class="agenda blocked">O</div>
-  <div class="agenda limited">N</div>
-  <div class="agenda limited">D</div>
+  <div class="agenda blocked">N</div>
+  <div class="agenda blocked">D</div>
   
   <script type="text/javascript">
     var agenda = document.querySelectorAll('.agenda'),
