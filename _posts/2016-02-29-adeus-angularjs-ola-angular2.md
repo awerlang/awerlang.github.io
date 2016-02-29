@@ -5,7 +5,7 @@ excerpt: "Confira o que tu precisa saber sobre a tão falada nova versão do Ang
 modified: 2016-02-29
 tags: [beta, angular 2, angular, migração, desenvolvimento web, visão geral, ajuda]
 categories: [angular]
-comments: false
+comments: true
 ---
 
 <section id="table-of-contents" class="toc">
