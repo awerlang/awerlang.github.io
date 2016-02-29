@@ -47,17 +47,3 @@ sitemap: false
     height: 150px;
 }
 
-.home .image-wrap::before {
-    position: absolute;
-    text-align: center;
-    font-size: 3em;
-    display: block;
-    top: 50px;
-    color: white;
-    line-height: normal;
-}  
-
-.home .image-wrap > img {
-    height: auto;
-}
-
