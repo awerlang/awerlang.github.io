@@ -3,7 +3,7 @@ layout: post
 title: Adeus AngularJS, olá Angular 2
 excerpt: "Confira o que tu precisa saber sobre a tão falada nova versão do Angular, antes de começar."
 modified: 2016-02-29
-tags: [angular2, beta, visao-geral, iniciante]
+tags: [angular2, beta, visão geral, iniciante, desenvolvimento web, aprendizado]
 categories: [angular2]
 comments: false
 ---
@@ -245,7 +245,8 @@ Já o *ngForward* permite usar alguma sintaxe do Angular 2 ao construir sobre o 
 Bobagem! Uma perda de tempo que não vai te ajudar significativamente. 
  
 Como eu não devo utilizar nenhuma das duas, irei apenas 
-compartilhar [este link](https://angular.io/docs/ts/latest/guide/upgrade.html) para elas.
+compartilhar [este link](https://angular.io/docs/ts/latest/guide/upgrade.html) 
+e [este também](https://github.com/ngUpgraders/ng-forward) para elas.
 
 E claro, permanecer na versão 1.x também é uma opção, para aplicações
 em estágio de manutenção isto é aceitável.
