@@ -3,14 +3,14 @@ layout: post
 title: Adeus AngularJS, olá Angular 2
 excerpt: "Confira o que tu precisa saber sobre a tão falada nova versão do Angular, antes de começar."
 modified: 2016-02-29
-tags: [angular2]
+tags: [angular2, beta, visao-geral, iniciante]
 categories: [angular2]
 comments: false
 ---
 
 <section id="table-of-contents" class="toc">
   <header>
-    <h3>Overview</h3>
+    <h3>Neste post</h3>
   </header>
   <div id="drawer" markdown="1">
   *  Auto generated table of contents
@@ -62,7 +62,7 @@ minha.
 O intuito deste *post* ainda não é começar a programar, mas não 
 poderíamos ficar sem um snippet do novo código.
 
-```ts
+```js
 import { Component, OnInit } from 'angular2/core';
 import { Router } from 'angular2/router';
 
