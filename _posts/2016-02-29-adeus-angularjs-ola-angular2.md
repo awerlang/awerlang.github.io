@@ -3,8 +3,8 @@ layout: post
 title: Adeus AngularJS, olá Angular 2
 excerpt: "Confira o que tu precisa saber sobre a tão falada nova versão do Angular, antes de começar."
 modified: 2016-02-29
-tags: [angular2, beta, visão geral, iniciante, desenvolvimento web, aprendizado]
-categories: [angular2]
+tags: [beta, angular 2, angular, migração, desenvolvimento web, visão geral, ajuda]
+categories: [angular]
 comments: false
 ---
 
