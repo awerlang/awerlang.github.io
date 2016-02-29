@@ -265,11 +265,11 @@ Espere ainda mais mais caso tenha optado pela má prática de utilizar `$scope`.
 
 # Onde encontrar documentação e ajuda?
 
-* Guides: https://angular.io/docs/ts/latest/guide/
-* API (preview): https://angular.io/docs/ts/latest/api/
-* Chat: https://gitter.im/angular/angular
-* Q&A: http://stackoverflow.com/questions/tagged/angular2
-* Bugs, etc: https://github.com/angular/angular/issues
+* Guides: [https://angular.io/docs/ts/latest/guide/](https://angular.io/docs/ts/latest/guide/)
+* API (preview): [https://angular.io/docs/ts/latest/api/](https://angular.io/docs/ts/latest/api/)
+* Chat: [https://gitter.im/angular/angular](https://gitter.im/angular/angular)
+* Q&A: [http://stackoverflow.com/questions/tagged/angular2](http://stackoverflow.com/questions/tagged/angular2)
+* Bugs, etc: [https://github.com/angular/angular/issues](https://github.com/angular/angular/issues)
 
 # Fechando a conta
 
