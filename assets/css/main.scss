@@ -34,7 +34,7 @@ sitemap: false
 	word-wrap: break-word;
 }
 
-.image-wrap::before {
+body:not(.post) .image-wrap::before {
     content: "Werlang Tecnologia";
     position: relative;
     text-align: center;
