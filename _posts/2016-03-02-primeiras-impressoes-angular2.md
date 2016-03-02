@@ -5,7 +5,7 @@ excerpt: "Algumas diferenças notáveis que nos deparamos na nova versão. Conhe
 modified: 2016-03-02
 tags: [beta, angular 2, angular, migração, desenvolvimento web, visão geral, ajuda]
 categories: [angular]
-comments: false
+comments: true
 image:
   feature: angular2.png
   credit: Google
