@@ -26,7 +26,8 @@ image:
 
 Vou registrar aqui as impressões que tive nos primeiros contatos com a nova versão, o Angular 2. Boa parte desta lista é fruto dos dois primeiros dias de estudo. Aqui estou listando algumas surpresas para quem vem do AngularJS 1.x, que em função da semelhança podem nos enganar. Vou tentar responder às principais questões que tu irá te perguntar.
 
-{: .notice} O Angular 2 está em *beta*, e algumas observações aqui podem ficar obsoletas até a *release*
+O Angular 2 está em *beta*, e algumas observações aqui podem ficar obsoletas até a *release*.
+{: .notice}
 
 ## Nova sintaxe para bindings de propriedades e eventos
 
