@@ -5,6 +5,7 @@ excerpt: "Disponibilizo um projeto inicial para o aprendizado do Angular 2."
 modified: 2016-03-04
 tags: [beta, angular 2, angular, projeto, desenvolvimento web, visão geral, ajuda]
 categories: [angular]
+comments: true
 image:
   feature: angular2.png
   credit: Google
