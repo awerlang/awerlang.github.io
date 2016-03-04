@@ -49,7 +49,7 @@ Além é claro do próprio Angular 2, RxJS e vários *polyfills*, escolhi estas 
 * Typescript: transpilação em modo *watch* para ES5 na pasta `dist`;
 * lite-server: disponibiliza o app num *endpoint* HTTP e atualiza a página automaticamente após alteração.
 
-Para experimentação, eu sugiro que siga estas opções. Se quiser trocar o `lite-server` por outro, tudo bem, mas a motivação deste post/repositório neste momento é que queremos menos fricção, para facilitar o estudo. E estas escolhas funcionam bem em conjunto. Mais tarde, com um entendimento melhor das tecnologias, busque outras configurações. (No mínimo eu agregaria um `JSPM`, e não, você não precisa do `Gulp` pra nada disso.)
+Para experimentação, eu sugiro que siga estas opções. Se quiser trocar o `lite-server` por outro, tudo bem, mas a motivação deste post/repositório neste momento é que queremos menos fricção, para facilitar o estudo. E estas escolhas funcionam bem em conjunto. Mais tarde, com um entendimento melhor das tecnologias, busque outras configurações. (No mínimo eu agregaria um `jspm`, e não, você não precisa do `gulp` pra nada disso.)
 
 ## Estrutura do repositório
 
@@ -114,8 +114,8 @@ E não deixe de verificar as referências indicadas, para saber mais sobre as te
 
 ## Referências
 
-* https://angular.io/docs/ts/latest/quickstart.html
-* https://angular.io/docs/ts/latest/guide/npm-packages.html
-* https://angular.io/docs/ts/latest/guide/typescript-configuration.html
-* https://github.com/mgechev/angular2-seed
-* https://github.com/angularclass/angular2-webpack-starter
+* [https://angular.io/docs/ts/latest/quickstart.html](https://angular.io/docs/ts/latest/quickstart.html)
+* [https://angular.io/docs/ts/latest/guide/npm-packages.html](https://angular.io/docs/ts/latest/guide/npm-packages.html)
+* [https://angular.io/docs/ts/latest/guide/typescript-configuration.html](https://angular.io/docs/ts/latest/guide/typescript-configuration.html)
+* [https://github.com/mgechev/angular2-seed](https://github.com/mgechev/angular2-seed)
+* [https://github.com/angularclass/angular2-webpack-starter](https://github.com/angularclass/angular2-webpack-starter)
