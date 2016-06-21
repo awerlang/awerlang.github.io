@@ -18,14 +18,14 @@ image:
 ## Tecnologias
 
 <figure class="third">
-    <img src="/tecnologia/dotnet.png">
-    <img src="/tecnologia/visualstudio.png">
-    <img src="/tecnologia/sqlserver.png">
+    <img src="/tecnologia/javascript.png">
+    <img src="/tecnologia/angularjs.jpg">
+    <img src="/tecnologia/nodejs.png">
 </figure>
 <figure class="third">
-    <img src="/tecnologia/javascript.png">
     <img src="/tecnologia/typescript.png">
-    <img src="/tecnologia/angularjs.jpg">
+    <img src="/tecnologia/dotnet.png">
+    <img src="/tecnologia/sqlserver.png">
 </figure>
 
 ---
@@ -33,8 +33,8 @@ image:
 ## Front-end Web
 
 * HTML;
-* JavaScript / TypeScript, AngularJS;
-* CSS / Stylus / LESS;
+* JavaScript / TypeScript, Angular;
+* CSS / Stylus / LESS / Sass;
 * Protractor, Karma, Jasmine.
 
 ---
@@ -43,7 +43,16 @@ image:
 
 * JavaScript, HTML, CSS;
 * Apache Cordova / PhoneGap;
-* LiveScript / Ionic.
+* NativeScript / Ionic.
+
+---
+
+## Back-end Web (JavaScript)
+
+* JavaScript / TypeScript;
+* NodeJS;
+* MongoDB, ElasticSearch;
+* Amazon Web Services.
 
 ---
 
@@ -54,14 +63,6 @@ image:
 * Entity Framework;
 * SQL Server, Oracle, PostgreSQL;
 * Specflow, MSTest.
-
----
-
-## Back-end Web (JavaScript)
-
-* JavaScript;
-* NodeJS;
-* MongoDB, ElasticSearch.
 
 **Importante** Estas combinações são recomendadas. Consulte modificações de acordo com o projeto.
 {: .notice}

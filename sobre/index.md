@@ -12,7 +12,7 @@ image:
 
 ## Quem eu sou
 
-Sou um desenvolver de software baseado na grande Porto Alegre, na cidade de São Leopoldo, RS &ndash; Brasil.
+Sou um desenvolver de software baseado na Grande Porto Alegre, na cidade de São Leopoldo, RS &ndash; Brasil.
 Desde outubro/2014 atuo como consultor independente. Caso queira contar com minha experiência no seu projeto,
 entre em contato comigo.
 
