@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Async in 2017 made easy</title>
+
+    <meta name="description" content="Async in 2017 made easy">
+    <meta name="author" content="André Werlang">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../../assets/css/reveal.css">
+    <link rel="stylesheet" href="../../assets/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../assets/css/print/pdf.css' : '../../assets/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <script src="lib/rx-marbles.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="../../assets/js/ga.js"></script>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section>
+                <h1>Async in 2017 made easy</h1>
+
+                <img src="assets/javascript.png" alt="">
+                <p>
+                    <span>André Werlang (@awerlang)</span>
+                </p>
+            </section>
+
+            <section>
+                <h2>Node.js</h2>
+
+                <img src="assets/node-current.png" alt="">
+
+                <p>
+                    <span>source: <a href="https://nodejs.org/en/">https://nodejs.org/en/</a></span>
+                </p>
+            </section>
+
+            <section>
+                <h2>LTS schedule</h2>
+
+                <img src="assets/schedule.png" alt="">
+
+                <p>
+                    <span>source: <a href="https://github.com/nodejs/LTS#lts-schedule">https://github.com/nodejs/LTS#lts-schedule</a></span>
+                </p>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Node.js ES2017 support</h2>
+
+                    <img src="assets/node-green.png" alt="">
+
+                    <p>
+                        <span>source: <a href="http://node.green/">http://node.green/</a></span>
+                    </p>
+
+                </section>
+
+                <section>
+                    <h2>Node.js ES2017 support</h2>
+
+                    <blockquote>
+                        To clarify, async/await is not yet finished. I'm working on fixing bugs and writing tests. If 53 branched today, we would not turn on the async/await flag on. I would not recommend using experimental features in production--they are often behind flags because they are not working 100% correctly.
+                        -- @littledan
+                    </blockquote>
+                    
+                    <p>
+                        <span>source: <a href="https://github.com/nodejs/promises/issues/4">https://github.com/nodejs/promises/issues/4</a></span>
+                    </p>
+                </section>
+            </section>
+
+            <section>
+                <h2>TC-39</h2>
+
+                <ul>
+                    <li>Accepted into ECMAScript 2017</li>
+                    <li><a href="https://tc39.github.io/ecmascript-asyncawait/">Async functions - Draft</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>promises - the old new way</h2>
+
+                <pre><code class="js" data-trim>
+function chainAnimationsPromise(elem, animations) {
+    let ret = null;
+    let p = currentPromise;
+    for(const anim of animations) {
+        p = p.then(function(val) {
+            ret = val;
+            return anim(elem);
+        })
+    }
+    return p.catch(function(e) {
+        /* ignore and keep going */
+    }).then(function() {
+        return ret;
+    });
+}
+                </code></pre>                
+
+                <p class="fragment">*<em>deprecated, in JavaScript standards</em></p>
+                <p class="fragment"><em>(just kidding)</em></p>
+
+                <p>
+                    <span>source: <a href="https://tc39.github.io/ecmascript-asyncawait/">https://tc39.github.io/ecmascript-asyncawait/</a></span>
+                </p>
+            </section>
+
+            <section>
+                <h2>enters async functions</h2>
+
+                <pre><code class="js" data-trim>
+async function chainAnimationsAsync(elem, animations) {
+    let ret = null;
+    try {
+        for(const anim of animations) {
+            ret = await anim(elem);
+        }
+    } catch(e) { /* ignore and keep going */ }
+    return ret;
+}
+                </code></pre>                
+
+                <p>
+                    <span>source: <a href="https://tc39.github.io/ecmascript-asyncawait/">https://tc39.github.io/ecmascript-asyncawait/</a></span>
+                </p>
+            </section>
+
+            <section>
+                <section>
+                    <h2>serialization</h2>
+
+                    <pre><code class="js" data-trim>
+async function downloadAll(urls) {
+    const list = [];
+    for (const url of urls) {
+        const ret = await fetch(url);
+        list.push(ret);
+    }
+    return list;
+}
+                    </code></pre>                
+                </section>
+
+                <section>
+                    <h2>chart</h2>
+
+                    <img src="assets/timeline-serial.png" alt="serial timeline">
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>concurrency</h2>
+
+                    <pre><code class="js" data-trim>
+async function downloadAll(urls) {
+    const list = [];
+    for (const url of urls) {
+        const ret = fetch(url);
+        list.push(ret);
+    }
+    return await Promise.all(list);
+}
+                    </code></pre>                
+                </section>
+
+                <section>
+                    <h2>concurrency (2)</h2>
+
+                    <pre><code class="js" data-trim>
+async function downloadAll(urls) {
+    return await Promise.all(urls.map(url => fetch(url)));
+}
+                    </code></pre>                
+                </section>
+
+                <section>
+                    <h2>chart</h2>
+
+                    <img src="assets/timeline-concurrent.png" alt="concurrent timeline">
+                </section>
+            </section>
+
+            <section>
+                <h2>express routes</h2>
+
+                <pre><code class="js" data-trim>
+app.get('/', (req, res) => {
+    service.get(req)
+        .then(data => {
+            res.send(data)
+        })
+        .catch(() => {
+            res.send(500, 'Oops...')
+        })
+})
+                </code></pre>                
+            </section>
+
+            <section>
+                <h2>express routes with async</h2>
+
+                <pre><code class="js" data-trim>
+app.get('/', async (req, res) => {
+    try {
+        const data = await service.get(req)
+        res.send(data)
+    } catch (e) {
+        res.send(500, 'Oops...')
+    }
+})
+                </code></pre>                
+            </section>
+
+            <section>
+                <h2>express routes with async (2)</h2>
+
+                <pre><code class="js" data-trim>
+app.get('/', async (req, res) => {
+    const data = await service.get(req)
+    res.send(data)
+})
+                </code></pre>                
+            </section>
+
+            <section>
+                <h2>express wrap() helper</h2>
+
+                <pre><code class="js" data-trim>
+function wrap(fn) {
+    return (req, res, next) => {
+        const maybe_promise = fn(req, res, next);
+        if (maybe_promise && typeof maybe_promise.catch === 'function') {
+            maybe_promise.catch(next);
+        }
+    };
+}
+
+app.get('/', wrap(async (req, res) => {
+    const data = await service.get(req)
+    res.send(data)
+}))
+                </code></pre>                
+            </section>
+
+            <section>
+                <h2>express monkey patch</h2>
+
+                <blockquote>
+                    I'm not always monkeypatching.
+                    But when i do it's Promise support for express.<br>
+                    -- @garkin
+                </blockquote>
+            </section>
+
+            <section>
+                <h2>express monkey patch (2)</h2>
+
+                <pre><code class="js" data-trim>
+var Layer = require("express/lib/router/layer");
+Layer.prototype.handle_request = function handle(req, res, next) {
+    var fn = this.handle;
+    if (fn.length > 3) return next();
+    try {
+        var maybe_promise = fn(req, res, next);
+        if (maybe_promise && typeof maybe_promise.catch === "function") {
+            maybe_promise.catch(next);
+        }
+    } catch (err) {
+        next(err);
+    }
+};
+                </code></pre>
+
+                <p>
+                    <span>source: <a href="https://gist.github.com/garkin/39e55d74c486cd75141d3d6721091cb2">https://gist.github.com/garkin/39e55d74c486cd75141d3d6721091cb2</a></span>
+                </p>
+            </section>
+
+            <section>
+                <h2>express middlewares</h2>
+
+                <ul>
+                    <li>Beware async functions ain't supported in middlewares</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>other considerations</h2>
+
+                <ul>
+                    <li class="fragment">interoperability</li>
+                    <li class="fragment">exception handling</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>node v7</h2>
+
+                <pre><code data-trim>node --harmony-async-await</code></pre>
+            </section>
+
+            <section>
+                <h2>babel setup</h2>
+
+                <p>Node >= v6</p>
+                <pre><code data-trim>npm install --save-dev babel-preset-es2017</code></pre>
+
+                <p>.babelrc:</p>
+                <pre><code class="yml" data-trim>
+{
+  "presets": [
+    "es2017"
+  ]
+}
+                </code></pre>
+
+                <p>
+                    <span>try: <a href="http://babeljs.io/repl/#?presets=stage-3&code=async%20function%20test()%20%7B%0D%0A%20%20%20%20await%20bar()%3B%0D%0A%7D">babel repl</a></span>
+                </p>
+            </section>
+
+            <section>
+                <h2>babel setup (2)</h2>
+
+                <p>Alternatively:</p>
+                <pre><code data-trim>npm install --save-dev babel-plugin-transform-async-to-generator</code></pre>
+
+                <p>.babelrc:</p>
+                <pre><code class="yml" data-trim>
+{
+  "plugins": [
+    "transform-async-to-generator"
+  ]
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>TypeScript</h2>
+
+                <ul>
+                    <li>TypeScript 1.7: targets ES6</li>
+                    <li>typescript@next: targets both ES5 and ES3</li>
+                </ul>
+                <pre><code class="ts" data-trim>
+async function downloadAll(urls: string[]): Promise&lt;any[]&gt; {
+    return await Promise.all(urls.map(url => fetch(url)));
+}
+                </code></pre>
+
+                <p>
+                    <span>try: <a href="https://www.typescriptlang.org/play/index.html">https://www.typescriptlang.org/play/index.html</a></span>
+                </p>
+            </section>
+
+            <section>
+                <h2>references</h2>
+
+                <ul>
+                    <li>https://tc39.github.io/ecmascript-asyncawait/</li>
+                    <li>https://github.com/expressjs/express/pull/2809</li>
+                    <li>https://strongloop.com/strongblog/async-error-handling-expressjs-es7-promises-generators/</li>
+                    <li>https://blog.risingstack.com/async-await-node-js-7-nightly/</li>
+                </ul>
+            </section>
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <script src="../../assets/lib/js/head.min.js"></script>
+    <script src="../../assets/js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../../assets/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../assets/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../assets/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../assets/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../assets/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../assets/plugin/notes/notes.js', async: true }
+				]
+			});
+    </script>
+
+</body>
+
+</html>
