@@ -8,3 +8,4 @@ node_modules
 _asset_bundler_cache
 TODO
 _posts/[^0-9]*
+debug.log
