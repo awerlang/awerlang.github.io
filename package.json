@@ -4,6 +4,9 @@
     "type": "git",
     "url": "git://github.com/awerlang/awerlang.github.io.git"
   },
+  "scripts": {
+    "start": "http-server -p 80 -c-1"
+  },
   "bugs": {
     "url": "https://github.com/awerlang/awerlang.github.io/issues"
   },
