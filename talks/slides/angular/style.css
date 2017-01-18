@@ -1,0 +1,30 @@
+.powered-by img {
+    height: 250px; 
+}
+
+.powered-by figure {
+    float: left;
+    margin: 20px !important;
+}
+
+.myths--truth::before {
+    display: inline-block;
+    content: "TRUTH";
+    color: limegreen;
+    margin-left: 12px;
+    border: 1px dashed limegreen;
+    transform: rotate(-10deg);
+}
+
+.myths--false::before {
+    display: inline-block;
+    content: "MYTH";
+    color: red;
+    margin-left: 12px;
+    border: 1px dashed red;
+    transform: rotate(10deg);
+}
+
+.interactive {
+    color: springgreen;
+}
