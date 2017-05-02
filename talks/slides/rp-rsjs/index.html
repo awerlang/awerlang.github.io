@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Reactive Programming with JavaScript</title>
+
+    <meta name="description" content="Reactive Programming with JavaScript">
+    <meta name="author" content="André Werlang">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../../assets/css/reveal.css">
+    <link rel="stylesheet" href="../../assets/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../assets/css/print/pdf.css' : '../../assets/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <script src="lib/rx-marbles.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!--<script src="../../assets/js/ga.js"></script>-->
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section>
+                <h1>Reactive Programming</h1>
+                <h3>with JavaScript</h3>
+
+                <img src="assets/Rx_Logo_M.png" alt="" style="width: 200px;">
+                <p>
+                    <span>André Werlang (@awerlang) - Porto Alegre - RSJS April, 2017</span>
+                </p>
+            </section>
+
+            <section>
+                <p>Ou:</p>
+                <p>Pra que serve essa variável perdida aqui mesmo? Abordando o problema reativamente!</p>
+            </section>
+
+            <section>
+                <h2>What we are about to see</h2>
+
+                <ul>
+                    <li>Decoupling</li>
+                    <li>Composition</li>
+                    <li>Asynchronous workflows</li>
+                    <li>Vocabulary</li>
+                </ul>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Attempts</h2>
+
+                    <img data-src="assets/attempts.jpg" alt="">
+                </section>
+
+                <section data-background="assets/callbacks.png">
+                    <h2>Callbacks</h2>
+
+                    <ul>
+                        <li>Just pass in a function</li>
+                        <li class="fragment">It can be synchronous...</li>
+                        <li class="fragment">...but probably not</li>
+                        <li class="fragment">...which leads to terrible coding style</li>
+                        <li class="fragment">And ties producer &amp; consumer</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Promises</h2>
+
+                    <ul>
+                        <li>ES2015</li>
+                        <li class="fragment">Abstraction around a future, immutable value</li>
+                        <li class="fragment">First-class citizen</li>
+                        <li class="fragment">They're eager</li>
+                        <li class="fragment">All or nothing, there's no progress indication</li>
+                        <li class="fragment">Does not provide for cancelling</li>
+                        <li class="fragment">Bad style still leads to callback hell</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Generators</h2>
+
+                    <ul>
+                        <li>ES2015</li>
+                        <li class="fragment">Synchronous (or cooperative)...</li>
+                        <li class="fragment">...but can yield a promise</li>
+                        <li class="fragment">Enforces an imperative-style</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Generators</h2>
+
+                    <pre><code class="js" data-trim>
+function* getAddresses(action) {
+  try {
+    const response = yield call(API.fetchAddress, ADDRESSES_ENDPOINT);
+    const data = {
+      options: [...response.data]
+    };
+    yield put({type: FINISH_LOCATION_SEARCH, payload: response.data});
+  } catch (err) {
+    yield put({
+      type: LOCATION_SEARCH_FAILURE,
+      payload: {
+        _error: err.message
+      }
+    });
+  }
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Async/await</h2>
+
+                    <ul>
+                        <li>ES2017</li>
+                        <li class="fragment">Designed on top of promises</li>
+                        <li class="fragment">Make code look sequential</li>
+                        <li class="fragment">...which we may find easier to read</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>To Sum Up</h2>
+
+                    <img data-src="assets/summingup.png" alt="" style="background: white;">
+                </section>
+
+                <section>
+                    <h2>Push & Pull</h2>
+
+                    <img data-src="assets/push-pull.jpg" alt="">
+                </section>
+
+                <section>
+                    <h2>How to generate a series of asynchronous events?</h2>
+
+                    <ul>
+                        <li>Callbacks ties producer &amp; consumer together</li>
+                        <li>Promises resolve to a single value</li>
+                        <li>Generators are synchronous-ish and don't multicast</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section data-background="assets/One-Ring-to-Rule-them-All.jpg">
+                <h1>&nbsp;</h1>
+                <h1>&nbsp;</h1>
+                <h1>&nbsp;</h1>
+                <h1>&nbsp;</h1>
+                <h2 style="color: crimson;">One Pattern To Rule Them All</h2>
+            </section>
+
+            <section style="top: 0px;display: block;min-width: 100vw;left: -25%;">
+                <h2>With Generators</h2>
+
+                <pre style="display: inline-block; width: 45%; max-width: 650px; position: static;"><code class="js" style="max-height: inherit;" data-trim>
+export function interval(ms) {
+  return eventChannel(emit => {
+    const iv = setInterval(() => {
+      emit(true);
+    }, ms);
+
+    return () => clearInterval(iv);
+  });
+}
+
+export function* runTimer(id) {
+  const intervalChannel = yield call(interval, 1000)
+
+  try {
+    while (true) {
+      yield take(intervalChannel);
+      yield fork(processInterval, id);
+    }
+  } finally {
+    intervalChannel.close();
+  }
+}
+                </code></pre>
+                <pre style="display: inline-block; width: 45%; position: static;"><code class="js" style="max-height: inherit;" data-trim>
+export function* processInterval(id) {
+  yield put(incrementTimer(id));
+}
+
+export function* manageTimer({ meta: { id } }) {
+  const timerRunnerTask = yield fork(runTimer, id);
+
+  yield take(action =>
+    [STOP_TIMER, RESET_TIMER, DESTROY_TIMER]
+        .includes(action.type)
+        && action.meta.id === id
+  );
+  yield cancel(timerRunnerTask);
+}
+
+export function* watchStartTimer() {
+  yield takeEvery(START_TIMER, manageTimer);
+}
+
+export default function* rootSaga() {
+  yield fork(watchStartTimer);
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>With Observable</h2>
+                <pre><code class="js" data-trim>
+action$.whenAction(START_TIMER)
+    .mergeMap(({meta}) => Observable.interval(1000).mapTo(meta.id))
+    .map(id => incrementTimer(id))
+    .takeUntil(action$.whenAction(STOP_TIMER, RESET_TIMER, DESTROY_TIMER))
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>KISS</h2>
+
+                <h3 class="fragment">...and don't make me think!</h3>
+            </section>
+
+            <section>
+                <h2>Best of both worlds?</h2>
+                <pre><code class="js" data-trim>
+action$.whenAction(LOAD_REQUEST)
+    .mergeMap(() => Observable.spawn(function* () {
+        yield loading();
+        yield* fetchData().map(response => load(response))
+        yield loaded();
+    }))
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Imperative programming</h2>
+
+                <ul>
+                    <li>Code runs in a linear sequence</li>
+                    <li>An instruction depends on previous execution</li>
+                    <li>Need to enforce proper updating of dependants</li>
+                    <li>Side-effects are natural</li>
+                    <li>Idea: encapsulate side-effects</li>
+                </ul>
+            </section>
+
+            <section>
+                <p>
+                    <span>Functional</span>
+                    <span class="fragment" style="color: red;">?</span>
+                    <span>Reactive</span>
+                    <span>Programming</span>
+                </p>
+
+                <img class="fragment" data-src="assets/elliot-rx.png" alt="" style="border: none;">
+            </section>
+
+            <section>
+                <h2>What does that mean?</h2>
+
+                <blockquote style="font-size: larger; color: hotpink">x = f(y) + g(x')</blockquote>
+            </section>
+
+            <section>
+                <blockquote>Reactive programming is programming with asynchronous data streams.</blockquote>
+
+                <blockquote>Values that change over time</blockquote>
+            </section>
+
+            <section data-background="assets/dalai-lama.jpg" data-background-size="contain">
+            </section>
+
+            <section data-background="assets/everything-stream.jpg" data-background-size="contain">
+            </section>
+
+            <section>
+                <h2>Concepts</h2>
+
+                <img data-src="assets/rx-concepts.png" alt="">
+            </section>
+
+            <section>
+                <img data-src="assets/observable-legend.png" alt="">
+            </section>
+
+            <section>
+                <img data-src="assets/grammar.jpg" alt="">
+            </section>
+
+            <section data-background="assets/mountain-stream.jpg">
+                <h2 style="color: crimson;">Streams</h2>
+
+                <ul style="color: crimson;">
+                    <li>Ongoing events</li>
+                    <li class="fragment">Emits values to subscribers...</li>
+                    <li class="fragment">...until it completes</li>
+                    <li class="fragment">...or it signals an error</li>
+                </ul>
+            </section>
+
+            <section data-background="assets/mountain-stream.jpg">
+                <h2 style="color: crimson;">Streams: sources</h2>
+
+                <ul style="color: crimson;">
+                    <li>Interactive events: mouse and keyboard input, timers</li>
+                    <li>File system</li>
+                    <li>Web service requests</li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li>Common infrastructure logic packaged as operators</li>
+                    <li>Coordinate async calls (and cancellation/error handling)</li>
+                    <li>Talk to observers whenever state changes</li>
+                    <li>Start producing when a consumer subscribes</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>A Functional Flavour</h2>
+
+                <ul>
+                    <li>Encapsulate low-level events into higher-level constructs</li>
+                    <li class="fragment">No visible mutation</li>
+                    <li class="fragment">First-class stream objects</li>
+                    <li class="fragment">Infinite, lazy evaluation</li>
+                    <li class="fragment">Reusable</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Characteristics</h2>
+
+                <ul>
+                    <li class="fragment">Chain operators</li>
+                    <li class="fragment">Multiple subscribers</li>
+                    <li class="fragment">Retries on error signal</li>
+                    <li class="fragment">Schedulers parameterize concurrency</li>
+                </ul>
+            </section>
+
+            <section>
+                <p>Create</p>
+                <pre><code class="js" data-trim>
+const o = new Observable(observer => {
+    fetchData((err, result) => {
+        if (err) {
+            observer.error(err)
+        } else {
+            observer.next(result)
+            observer.complete()
+        }
+    })
+})
+                </code></pre>
+
+                <p>Convert</p>
+                <pre><code class="js" data-trim>
+Observable.of(value, ...)
+Observable.from(promise/iterable/observable)
+                </code></pre>
+            </section>
+
+            <section>
+                <p>Compose</p>
+                <pre><code class="js" data-trim>
+const mousedrag = mousedown.mergeMapTo(mousemove).takeUntil(mouseup)
+                </code></pre>
+
+                <p>Retry</p>
+                <pre><code class="js" data-trim>
+const myObservable = obsA.mergeMap(a => getB(a).retry(3))
+...
+                </code></pre>
+
+                <p>Subscription</p>
+                <pre><code class="js" data-trim>
+const subscription = myObservable.subscribe(value => { ... })
+                </code></pre>
+
+                <p>Cancellation</p>
+                <pre><code class="js" data-trim>
+subscription.unsubscribe()
+                </code></pre>
+            </section>
+
+            <section>
+                <p>Observables can be of any type</p>
+
+                <pre><code class="js" data-trim>
+navigator.onLine
+    ? Observable.timer(3000)
+    : Observable.fromEvent(window, 'online').take(1)
+                </code></pre>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Operators</h2>
+
+                    <img data-src="assets/wordcloud.svg" alt="">
+                </section>
+
+                <section>
+                    <h2>map</h2>
+
+                    <rx-marbles key="map"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>scan</h2>
+
+                    <rx-marbles key="scan"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>debounce</h2>
+
+                    <rx-marbles key="debounce"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>combineLatest</h2>
+
+                    <rx-marbles key="combineLatest"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>merge</h2>
+
+                    <rx-marbles key="merge"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>zip</h2>
+
+                    <rx-marbles key="zip"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>race</h2>
+
+                    <rx-marbles key="amb"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>filter</h2>
+
+                    <rx-marbles key="filter"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>distinct</h2>
+
+                    <rx-marbles key="distinct"></rx-marbles>
+                </section>
+
+                <section>
+                    <h2>pausable</h2>
+
+                    <rx-marbles key="pausable"></rx-marbles>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>One example</h2>
+
+                    <h3>Typeahead</h3>
+
+                    <p>
+                        <span>Whenever user types into a textbox, display a list of suggestions</span><span class="fragment" style="color: crimson;">, but only if:</span>
+                    </p>
+                    <ul>
+                        <li class="fragment">Text length is greater than 2 characters</li>
+                        <li class="fragment">User stopped typing for longer than 500ms</li>
+                        <li class="fragment">Text had actually been changed</li>
+                    </ul>
+                    <p class="fragment">
+                        <span>Which event we're talking about?</span>
+                    </p>
+                </section>
+
+                <section>
+                    <p>
+                        <span>The event `UserChangedTextLongerThan2CharactersAbout500msAgo`</span>
+                    </p>
+                    <img class="fragment" data-src="assets/bingo.gif" alt="">
+                    <p class="fragment">
+                        <span>When this event happens, make the request.</span>
+                    </p>
+                    <p class="fragment">
+                        <span>(and cancel any pending requests...)</span>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>One solution</h2>
+                    <pre class="fragment"><code class="js" data-trim>
+const inputChanged = Observable.fromEvent(inputElement, 'input')
+    .map(ev => ev.target.value)
+    .filter(text => text.length > 2)
+    .debounceTime(500)
+    .distinctUntilChanged();
+                    </code></pre>
+                    <pre class="fragment"><code class="js" data-trim>
+const newSuggestionsArrived = inputChanged
+    .switchMap(q => Observable.ajax.getJSON('search?term=' + q));
+                    </code></pre>
+                    <pre class="fragment"><code class="js" data-trim>
+newSuggestionsArrived.subscribe(data => {
+    suggestionsElement.innerHTML = data.map(it => `<li>${it}</li>`)
+                                       .join('');
+});
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <h2>Cold, Hot Observables</h2>
+
+                <ul>
+                    <li>
+                        <span style="color: red;">HOT:</span>
+                        <span>Shares a single producer for all subscribers</span>
+                    </li>
+                    <li class="fragment">
+                        <span style="color: lightskyblue;">COLD:</span>
+                        <span>Creates a new producer for each subscriber</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Use cases</h2>
+                </section>
+
+                <section>
+                    <h2>Redux Store</h2>
+
+                    <pre><code class="js" data-trim>
+function counter(state = 0, action) {
+  switch (action.type) {
+  case 'INCREMENT':
+    return state + 1
+  case 'DECREMENT':
+    return state - 1
+  default:
+    return state
+  }
+}
+
+const store = createStore(counter)
+
+store.subscribe(state =>
+  console.log(state)
+)
+                    </code></pre>
+                    <pre class="fragment"><code class="js" data-trim>
+const actions$ = new SubjectBehavior()
+const createStore = (reducer, preState) => action$.scan(reducer, preState)
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Side-effect model</h2>
+
+                    <pre><code class="js" data-trim>
+action$
+    .withLatestFrom(store)
+    .filter(([action, state]) => action.type === 'INCREMENT_ODD')
+    .filter(([action, state]) => state % 2 === 1)
+    .map(() => {type: 'INCREMENT'})
+    .subscribe(action$)
+                    </code></pre>
+
+                    <pre class="fragment"><code class="js" data-trim>
+action$
+    .filter(action => action.type === 'LOAD_REQUEST')
+    .mergeMap(() => fetchData().retry(3))
+    .map(response => {type: 'LOAD_SUCCESS', payload: response})
+    .catch(() => {type: 'LOAD_FAILED'})
+    .subscribe(action$)
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <h2>Tips</h2>
+
+                <ul>
+                    <li>Extract state and behaviors as streams</li>
+                    <li>Bind them only once</li>
+                    <li>Use a virtual time scheduler for testing</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Visualizing</h2>
+
+                <img data-src="assets/gh-follow-shot.png" alt="">
+            </section>
+
+            <section class="implementations">
+                <h2>Implementations</h2>
+
+                <figure>
+                    <img data-src="assets/Rx_Logo_M.png" alt="">
+                    <figcaption>RxJS</figcaption>
+                </figure>
+                <figure>
+                    <img data-src="assets/bacon.png" alt="">
+                    <figcaption>Bacon.js</figcaption>
+                </figure>
+                <figure>
+                    <img data-src="assets/cyclejs_logo.svg" alt="">
+                    <figcaption>Cycle.js</figcaption>
+                </figure>
+            </section>
+
+            <section>
+                <h2>Future</h2>
+
+                <ul>
+                    <li>Observable ES stage 1</li>
+                    <li>Share a common push-based stream protocol</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>And let's keep an eye on</h2>
+
+                <ul>
+                    <li>Async generators</li>
+                    <li>Communicating Sequential Processes</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Samples</h2>
+
+                <ul>
+                    <li><a href="https://github.com/awerlang/rxjs-samples/tree/master/src/typeahead">Typeahead</a></li>
+                    <li><a href="https://github.com/awerlang/rxjs-samples/tree/master/src/paint">PaintBrush</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Thanks!</h2>
+
+                <h3>Questions?</h3>
+
+                <p>@awerlang</p>
+                <p>http://blog.werlangtecnologia.com.br</p>
+            </section>
+
+            <section>
+                <h2>References</h2>
+
+                <ul>
+                    <li><a href="http://rxmarbles.com/">http://rxmarbles.com/</a></li>
+                    <li><a href="http://reactivex.io">http://reactivex.io</a></li>
+                    <li><a href="http://reactivex.io/learnrx/">http://reactivex.io/learnrx/</a></li>
+                    <li><a href="https://twitter.com/conal/status/468875014461468677">https://twitter.com/conal/status/468875014461468677</a></li>
+                    <li><a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/which-instance.md">https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/which-instance.md</a></li>
+                </ul>
+            </section>
+        </div>
+
+    </div>
+
+    <script src="../../assets/lib/js/head.min.js"></script>
+    <script src="../../assets/js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../../assets/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../assets/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../assets/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../assets/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../assets/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../assets/plugin/notes/notes.js', async: true }
+				]
+			});
+    </script>
+
+</body>
+
+</html>
