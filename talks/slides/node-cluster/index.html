@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Multi-process in Node.js</title>
+
+    <meta name="description" content="Multi-process in Node.js">
+    <meta name="author" content="André Werlang">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../../assets/css/reveal.css">
+    <link rel="stylesheet" href="../../assets/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../assets/css/print/pdf.css' : '../../assets/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <script src="../../assets/js/ga.js"></script>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section>
+                <h1>Multi-process in Node.js</h1>
+
+                <img src="assets/nodejs.png" alt="">
+                <p>
+                    <span>André Werlang (@awerlang)</span>
+                </p>
+            </section>
+
+            <section>
+                <h2>Node.js Architecture</h2>
+
+                <img src="assets/node-architecture.png" alt="">
+            </section>
+
+            <section>
+                <h2>Cluster Use Cases</h2>
+
+                <ul>
+                    <li>Restart on Failure</li>
+                    <li>Multi-Core</li>
+                    <li>Inter-Process Communication</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Definitions</h2>
+
+                <ul>
+                    <li>Program: the source code</li>
+                    <li>Process: a runtime instance of a program</li>
+                    <li>Cluster: a group of processes in a single machine</li>
+                    <li>Master: initial processes, starts the others</li>
+                    <li>Worker: a child process</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Comparison</h2>
+
+                <ul>
+                    <li>child_process: create any process</li>
+                    <li>cluster: create a copy of a single Node.js process</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Usage</h2>
+
+                <pre><code data-trim>
+const cluster = require('cluster');
+
+if (cluster.isMaster) {
+    const numWorkers = require('os').cpus().length;
+    for (let i = 0; i < numWorkers; i++) {
+        const newWorker = cluster.fork();
+    }
+
+    cluster.on('exit', function (worker, code, signal) {
+        cluster.fork();
+    });
+} else {
+    require('./app');
+}
+                </code></pre>
+
+                <p>
+                    <em>* cluster is a native module, no need to npm install</em>
+                </p>
+            </section>
+
+            <section>
+                <h2>Node.js Runtime</h2>
+
+                <img src="assets/workers.png" alt="">
+            </section>
+
+            <section>
+                <h2>API</h2>
+
+                <ul>
+                    <li>master</li>
+                    <ul>
+                        <li>cluster.isMaster</li>
+                        <li>cluster.fork(env?)</li>
+                        <li>cluster.on('online', cb)</li>
+                        <li>cluster.on('exit', cb)</li>
+                        <li>cluster.workers</li>
+                        <li>os.cpus().length</li>
+                    </ul>
+                    <li>worker</li>
+                    <ul>
+                        <li>cluster.isWorker</li>
+                        <li>cluster.worker</li>
+                    </ul>
+                </ul>
+            </section>
+
+            <section>
+                <h2>API #2</h2>
+
+                <ul>
+                    <li>Inter-Process Communication</li>
+                    <ul>
+                        <li>cluster.on('message', cb)</li>
+                        <li>process.send(message, sendHandle?)</li>
+                    </ul>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Beware</h2>
+
+                <ul>
+                    <li>debug</li>
+                    <ul>
+                        <li>Start the child worker you want to debug</li>
+                    </ul>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Alternatives</h2>
+
+                <ul>
+                    <li>forever</li>
+                    <li>pm2</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>References</h2>
+
+                <ul>
+                    <li>https://nodejs.org/api/cluster.html</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>THANKS</h2>
+
+                <ul>
+                    <li><a href="blog.werlangtecnologia.com.br/">Blog</a></li>
+                    <li><a href="https://github.com/awerlang">GitHub</a></li>
+                    <li><a href="https://twitter.com/awerlang">Twitter</a></li>
+                    <li><a href="https://medium.com/@awerlang">Medium</a></li>
+                </ul>
+            </section>
+        </div>
+
+    </div>
+
+    <script src="../../assets/lib/js/head.min.js"></script>
+    <script src="../../assets/js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../../assets/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../assets/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../assets/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../assets/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../assets/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../assets/plugin/notes/notes.js', async: true }
+				]
+			});
+    </script>
+
+</body>
+
+</html>
