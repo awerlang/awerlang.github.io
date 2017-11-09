@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Modelagem de dados com DynamoDB</title>
+
+    <meta name="description" content="Modelagem de dados com DynamoDB">
+    <meta name="author" content="André Werlang">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../../assets/css/reveal.css">
+    <link rel="stylesheet" href="../../assets/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '../../assets/css/print/pdf.css' : '../../assets/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <script src="../../assets/js/ga.js"></script>
+
+    <script>
+        setTimeout(function () {
+            // location.reload();
+        }, 60000);
+    </script>
+    <style>
+        section {
+            text-align: left;
+        }
+
+        h1,
+        h2,
+        img {
+            text-align: center;
+        }
+
+        .concepts {
+            width: 100%;
+            border: dashed 1px white !important;
+            border-spacing: 12px !important;
+            border-radius: 6px;
+            border-collapse: separate !important;
+            padding: 0 8px 8px 0;
+            margin-bottom: 24px !important;
+        }
+
+        .concepts td {
+            border: solid 1px white !important;
+            width: 120px;
+            border-radius: 6px;
+            text-align: center !important;
+        }
+
+        .concepts .middle {
+            vertical-align: middle;
+        }
+
+        .concepts .partition-key {
+            background: fuchsia;
+        }
+
+        .concepts .sort-key {
+            background: yellowgreen;
+        }
+
+        .concepts .selected {
+            background: lightcoral;
+        }
+
+        .concepts .title {
+            background: grey;
+        }
+
+        .concepts .empty {
+            border: none !important;
+        }
+
+        .math td[rowspan] {
+            vertical-align: middle;
+        }
+
+        .label-partition {
+            border: solid 1px fuchsia !important;
+            border-radius: 6px;
+            padding: 0 4px !important;
+            color: fuchsia;
+        }
+
+        .label-sort {
+            border: solid 1px yellowgreen !important;
+            border-radius: 6px;
+            padding: 0 4px !important;
+            color: yellowgreen;
+        }
+
+        .label-collection {
+            border: dashed 1px white !important;
+            border-radius: 6px;
+            padding: 0 4px !important;
+            color: white;
+            float: right;
+        }
+
+        .code {
+            background: lightgray;
+            color: black;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: royalblue;
+        }
+
+        .text-center,
+        .text-center td,
+        .text-center th {
+            text-align: center !important;
+        }
+
+        .text-xl {
+            font-size: 64px !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section>
+                <h2>Modelagem de dados com DynamoDB</h2>
+
+                <p style="text-align: center">
+                    <img src="assets/dynamodb-banner.png" alt="">
+                </p>
+                <p style="text-align: center">
+                    <span>André Werlang</span>
+                </p>
+                <p style="text-align: center">
+                    <span>@awerlang</span>
+                </p>
+                <p style="text-align: center">
+                    <span>The Developer's Conference 2017 - Porto Alegre</span>
+                </p>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Do you know DynamoDB?</h2>
+
+                    <blockquote class="text-center">
+                        Amazon DynamoDB is a fully managed non-relational database service that provides fast and predictable performance with seamless
+                        scalability.
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2>Use cases</h2>
+
+                    <ul>
+                        <li>Mobile</li>
+                        <li>Web</li>
+                        <li>Gaming</li>
+                        <li>Advertisement</li>
+                        <li>IoT</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <section class="text-center">
+                    <h2>Architecture</h2>
+
+                    <!-- <img src="assets/architecture.svg" alt=""> -->
+                    <object data="assets/architecture.svg" type="image/svg+xml"></object>
+                </section>
+
+                <section class="text-center">
+                    <h2>Latency vs Requests</h2>
+
+                    <object data="assets/latency.svg" type="image/svg+xml"></object>
+                </section>
+
+                <section class="text-center">
+                    <h2>Partitioning</h2>
+
+                    <object data="assets/partitioning.svg" type="image/svg+xml"></object>
+                </section>
+
+                <section>
+                    <h2>Avoiding throttling</h2>
+
+                    <ul>
+                        <li>Access is evenly spread over key-space</li>
+                        <li>Cache popular items</li>
+                        <li>Read/write sharding</li>
+                        <li>Requests arrive evenly spaced in time</li>
+                    </ul>
+                </section>
+
+                <section class="text-center">
+                    <h2>Bursting</h2>
+
+                    <img src="assets/bursting.png" alt="">
+                </section>
+
+                <section>
+                    <h2>Other features</h2>
+
+                    <ul>
+                        <li class="fragment">Auto scaling</li>
+                        <li class="fragment">Metrics, monitoring, alarms</li>
+                        <li class="fragment">Triggers &amp; streams (AWS Lambda)</li>
+                        <li class="fragment">Time to live attribute</li>
+                        <li class="fragment">Atomic updates</li>
+                        <li class="fragment">DAX: transparent, in-memory cache</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Throughput &amp; costs</h2>
+
+                    <ul>
+                        <li>Read Capacity Unit (RCU) = 4 KB</li>
+                        <li>Write Capacity Unit (WCU) = 1 KB</li>
+                        <li>Billed by the hour</li>
+                    </ul>
+
+                    <table class="text-center">
+                        <thead>
+                            <tr>
+                                <th>RCU</th>
+                                <th>WCU</th>
+                                <th>USD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>50</td>
+                                <td>25</td>
+                                <td>3,57</td>
+                            </tr>
+                            <tr>
+                                <td>100</td>
+                                <td>50</td>
+                                <td>28,55</td>
+                            </tr>
+                            <tr>
+                                <td>2000</td>
+                                <td>400</td>
+                                <td>549,55</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        <em>* Region South America, monthly price before taxes.</em>
+                    </p>
+                    <p>
+                        Source:
+                        <a href="http://calculator.s3.amazonaws.com/index.html#s=DYNAMODB">http://calculator.s3.amazonaws.com/index.html</a>
+                    </p>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Concepts: Table</h2>
+
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">P1</td>
+                            <td class="sort-key">S1</td>
+                            <td class="attribute">string</td>
+                            <td class="attribute">145.99</td>
+                            <td class="attribute empty"></td>
+                        </tr>
+                    </table>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">P2</td>
+                            <td class="sort-key">S1</td>
+                            <td class="attribute">string</td>
+                            <td class="attribute">null</td>
+                            <td class="attribute empty"></td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">P2</td>
+                            <td class="sort-key">S2</td>
+                            <td class="attribute">string</td>
+                            <td class="attribute">null</td>
+                            <td class="attribute">[12, 34]</td>
+                        </tr>
+                    </table>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">P3</td>
+                            <td class="sort-key">S1</td>
+                            <td class="attribute">string</td>
+                            <td class="attribute">45.99</td>
+                            <td class="attribute empty"></td>
+                        </tr>
+                    </table>
+                    <div>
+                        <span class="label-partition">Partition key</span>
+                        <span class="label-sort">Sort key</span>
+                        <span class="label-collection">Item collection</span>
+                    </div>
+
+                    <p>
+                        * Max item size: 400 KB
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Concepts: Indexes</h2>
+
+                    <h4>Table</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Sender</td>
+                            <td class="sort-key">Msg Id</td>
+                            <td class="attribute">Date</td>
+                            <td class="attribute">Sent To</td>
+                            <td class="attribute">Body</td>
+                        </tr>
+                    </table>
+
+                    <h4>Local Secondary Index</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Sender</td>
+                            <td class="sort-key">Date</td>
+                            <td class="attribute">Msg Id</td>
+                            <td class="attribute">Sent To</td>
+                            <td class="attribute empty"></td>
+                        </tr>
+                    </table>
+
+                    <h4>Global Secondary Index</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Sent To</td>
+                            <td class="sort-key">Date</td>
+                            <td class="attribute">Msg Id</td>
+                            <td class="attribute">Sender</td>
+                            <td class="attribute empty"></td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Concepts: Indexes</h2>
+
+                    <ul>
+                        <li>Sparse: ignores items missing key attributes</li>
+                        <li>Supported in Query &amp; Scan operations</li>
+                        <li>Local</li>
+                        <ul>
+                            <li>Synchronous update</li>
+                        </ul>
+                        <li>Global</li>
+                        <ul>
+                            <li>Eventually consistent, always</li>
+                        </ul>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Concepts: Data Types</h2>
+
+                    <ul>
+                        <li>Simple</li>
+                        <ul>
+                            <li>string (except empty string)</li>
+                            <li>number (stored as text)</li>
+                            <li>binary</li>
+                        </ul>
+                        <li>Other</li>
+                        <ul>
+                            <li>boolean</li>
+                            <li>set (of string, number, binary)</li>
+                            <li>map</li>
+                            <li>list (of any)</li>
+                            <li>null</li>
+                        </ul>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>DynamoDB Math</h2>
+
+                    <table class="concepts math">
+                        <tr>
+                            <td class="partition-key">3 KB</td>
+                            <td class="partition-key"></td>
+                            <td class="partition-key"></td>
+                            <td class="attribute empty" colspan="2">1 RCU, 3 WCU</td>
+                        </tr>
+                    </table>
+                    <table class="concepts math">
+                        <tr>
+                            <td class="sort-key">1 KB</td>
+                            <td class="attribute empty"></td>
+                            <td class="attribute empty" colspan="2">1 RCU, 1 WCU</td>
+                            <td class="attribute" rowspan="2">1 RCU</td>
+                        </tr>
+                        <tr>
+                            <td class="sort-key">2 KB</td>
+                            <td class="sort-key"></td>
+                            <td class="attribute empty" colspan="2">1 RCU, 2 WCU</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Data Operations</h2>
+
+                    <h4>Get Item</h4>
+
+                    <pre><code data-trim class="js">
+{
+    TableName: "Users",
+    Key: {
+        id: "user-123"
+    },
+    ConsistentRead: false,
+}
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>Data Operations</h2>
+
+                    <h4>Scan</h4>
+
+                    <pre><code data-trim class="js">
+{
+    TableName: "Users",
+    IndexName: 'ByCountry',
+    FilterExpression: "country = 'Brazil'",
+    Limit: 10,
+}
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>Data Operations</h2>
+
+                    <h4>Query</h4>
+
+                    <pre><code data-trim class="js">
+{
+    TableName: "Messages",
+    KeyConditionExpression: "userId = 'user-123' and date > '2017-10-15'",
+}
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>Data Operations</h2>
+
+                    <h4>Put Item</h4>
+
+                    <pre><code data-trim class="js">
+{
+    TableName: "Messages",
+    Item: {
+        id: "msg-1",
+        userId: "user-123",
+        date: "2017-11-07",
+        subject: "TDC is about to start...",
+        body: "...",
+    },
+}
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>Data Operations</h2>
+
+                    <h4>Update Item</h4>
+
+                    <pre><code data-trim class="js">
+{
+    TableName: "Game",
+    Key: {
+        id: 'game-123',
+    },
+    UpdateExpression: "
+        set topLeft = 'O',
+            version = version + 1,
+            moves = list_append(moves, ['Alice']),
+            metadata = if_not_exists(metadata, {})
+        remove pending
+        add 'pending' to gameState
+    ",
+    ConditionExpression: "version = 1",
+}
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>Data Operations</h2>
+
+                    <h4>Delete Item</h4>
+
+                    <pre><code data-trim class="js">
+{
+    TableName: "Messages",
+    Key: {
+        id: 'msg-123',
+    },
+}
+                        </code></pre>
+                </section>
+
+                <section>
+                    <h2>Update Expressions (SET)</h2>
+
+                    <ul>
+                        <li>Functions: if_not_exists, and list_append</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Update Conditionals</h2>
+
+                    <ul>
+                        <li>Functions: ATTRIBUTE_EXIST, CONTAINS, and BEGINS_WITH</li>
+                        <li>Comparison: =, &lt;&gt;, &lt;, &gt;, &lt;=, >=, BETWEEN, and IN</li>
+                        <li>Logical: NOT, AND, and OR</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Modeling with DynamoDB</h2>
+
+                    <ul>
+                        <li class="fragment">How often data is read?</li>
+                        <li class="fragment">How big are items?</li>
+                        <li class="fragment">How data is retrieved?</li>
+                        <li class="fragment">What attributes change on items?</li>
+                        <li class="fragment">Any popular items?</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>1:N relations - I</h2>
+
+                    <h4>Conference Track - talks as lists</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">TrackID</td>
+                            <td class="attribute title" colspan="">Title</td>
+                            <td class="attribute title" colspan="">Talks</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key middle">1</td>
+                            <td class="middle">NoSQL</td>
+                            <td>
+                                <table class="concepts">
+                                    <tr>
+                                        <td class="attribute title">ID</td>
+                                        <td class="attribute title">Title</td>
+                                        <td class="attribute title">Speaker</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">1</td>
+                                        <td class="attribute">Talk 1</td>
+                                        <td class="attribute">Speaker</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">2</td>
+                                        <td class="attribute">Talk 2</td>
+                                        <td class="attribute">Speaker</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">3</td>
+                                        <td class="attribute">Talk 3</td>
+                                        <td class="attribute">Speaker</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="red">
+                        Writes are expensive and non-atomic.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>1:N relations - II</h2>
+
+                    <h4>Conference Track - talks as maps</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">TrackID</td>
+                            <td class="attribute title" colspan="">Title</td>
+                            <td class="attribute title" colspan="">Talks</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key middle">1</td>
+                            <td class="middle">NoSQL</td>
+                            <td>
+                                <table class="concepts">
+                                    <tr>
+                                        <td class="attribute empty"></td>
+                                        <td class="attribute title">Title</td>
+                                        <td class="attribute title">Speaker</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="partition-key">1</td>
+                                        <td class="attribute">Talk 1</td>
+                                        <td class="attribute">Speaker</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="partition-key">2</td>
+                                        <td class="attribute">Talk 2</td>
+                                        <td class="attribute">Speaker</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="partition-key">3</td>
+                                        <td class="attribute">Talk 3</td>
+                                        <td class="attribute">Speaker</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        <span class="blue">
+                            Writes are atomic.
+                        </span>
+                        <span class="red">
+                            Writes are still expensive.
+                        </span>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>1:N relations - III</h2>
+
+                    <h4>Conference Track - talks as separate table</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">TrackID</td>
+                            <td class="sort-key">ID</td>
+                            <td class="attribute title">Title</td>
+                            <td class="attribute title">Speaker</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">1</td>
+                            <td class="attribute">Talk 1</td>
+                            <td class="attribute">Speaker 1</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">2</td>
+                            <td class="attribute">Talk 2</td>
+                            <td class="attribute">Speaker 2</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">3</td>
+                            <td class="attribute">Talk 3</td>
+                            <td class="attribute">Speaker 3</td>
+                        </tr>
+                    </table>
+                    <p class="blue">
+                        Writes are cheap.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>1:N relations - IV</h2>
+
+                    <h4>Conference Track - composite sort keys</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">TrackID</td>
+                            <td class="sort-key">ID</td>
+                            <td class="attribute title">Title</td>
+                            <td class="attribute title">Speaker</td>
+                            <td class="attribute title">Date</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">track</td>
+                            <td class="attribute">NoSQL</td>
+                            <td class="attribute empty"></td>
+                            <td class="attribute">20171109</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">talk:1</td>
+                            <td class="attribute">Talk 1</td>
+                            <td class="attribute">Speaker</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">talk:2</td>
+                            <td class="attribute">Talk 2</td>
+                            <td class="attribute">Speaker</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">talk:3</td>
+                            <td class="attribute">Talk 3</td>
+                            <td class="attribute">Speaker</td>
+                        </tr>
+                    </table>
+                    <p class="blue">
+                        Reads are flexible.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Large Items - Overflow table</h2>
+
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">UserId</td>
+                            <td class="sort-key">MsgId</td>
+                            <td class="attribute">Subject</td>
+                            <td class="attribute">Body</td>
+                            <td class="attribute">Parts</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">10</td>
+                            <td class="attribute">URGENT</td>
+                            <td class="attribute">part 1/3</td>
+                            <td class="attribute">3</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">1</td>
+                            <td class="sort-key">25</td>
+                            <td class="attribute">HELP</td>
+                            <td class="attribute">part 1/1</td>
+                            <td class="attribute">1</td>
+                        </tr>
+                    </table>
+
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">MsgId</td>
+                            <td class="sort-key">Part #</td>
+                            <td class="attribute" colspan="2">Body</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">10</td>
+                            <td class="sort-key">1</td>
+                            <td class="attribute" colspan="2">part 2/3</td>
+                        </tr>
+                        <tr>
+                            <td class="partition-key">10</td>
+                            <td class="sort-key">2</td>
+                            <td class="attribute" colspan="2">part 3/3</td>
+                        </tr>
+                    </table>
+
+                    <p class="blue">
+                        Good for read-only views.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Time Series</h2>
+
+                    <h4>Events_2017_11</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Date</td>
+                            <td class="sort-key">Id</td>
+                            <td class="attribute">...</td>
+                            <td class="attribute empty" colspan="2">1000 RCUs / 1000 WCUs</td>
+                        </tr>
+                    </table>
+
+                    <h4>Events_2017_10</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Date</td>
+                            <td class="sort-key">Id</td>
+                            <td class="attribute">...</td>
+                            <td class="attribute empty" colspan="2">100 RCUs / 100 WCUs</td>
+                        </tr>
+                    </table>
+
+                    <h4>Events_2017_09</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Date</td>
+                            <td class="sort-key">Id</td>
+                            <td class="attribute">...</td>
+                            <td class="attribute empty" colspan="2">10 RCUs / 10 WCUs</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Time Series</h2>
+
+                    <h4>Events</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Id</td>
+                            <td class="attribute">Bucket (1..N)</td>
+                            <td class="attribute">Date</td>
+                            <td class="attribute">...</td>
+                            <td class="attribute empty" colspan="2">1000 RCUs / 1000 WCUs</td>
+                        </tr>
+                    </table>
+
+                    <h4>EventsByBucketIndex (GSI)</h4>
+                    <table class="concepts">
+                        <tr>
+                            <td class="partition-key">Bucket</td>
+                            <td class="sort-key">Date</td>
+                            <td class="attribute">Id</td>
+                            <td class="attribute empty" colspan="2">10 RCUs / 10 WCUs</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Scatter / Gather</h2>
+
+                    <table class="concepts">
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute selected"></td>
+                            <td class="attribute selected"></td>
+                            <td class="attribute selected"></td>
+                            <td class="attribute selected"></td>
+                        </tr>
+                    </table>
+                    <table class="concepts">
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                    </table>
+                    <table class="concepts">
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                            <td class="attribute"></td>
+                        </tr>
+                        <tr>
+                            <td class="attribute selected"></td>
+                            <td class="attribute selected"></td>
+                            <td class="attribute selected"></td>
+                            <td class="attribute selected"></td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Are you missing...</h2>
+
+                    <ul>
+                        <li>Transactions?</li>
+                        <li>Joins?</li>
+                        <li>Ad hoc queries?</li>
+                        <li>Geospatial data?</li>
+                        <li>Backups?</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Wait...</h2>
+
+                    <p class="text-center text-xl">
+                        Did you say
+                        <span class="red">NO BACKUPS</span>?
+                    </p>
+                </section>
+
+                <section>
+                    <img src="assets/dynamodb-backup-question.png" alt="">
+                </section>
+
+                <section>
+                    <img src="assets/dynamodb-backup-answer.png" alt=""> Source:
+                    <a href="https://youtu.be/w-QLCWHj5XM?t=94">https://youtu.be/w-QLCWHj5XM?t=94</a>
+                </section>
+
+            </section>
+
+            <section>
+                <h2>Top 3 reasons</h2>
+
+                <ul>
+                    <li>Low latency and predictability</li>
+                    <li>Scalability</li>
+                    <li>Cost effective</li>
+                    <li class="fragment">Bonus: fully managed</li>
+                </ul>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Next steps</h2>
+
+                    <ol>
+                        <li>Download DynamoDB Local at http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html</li>
+                        <li>Run and navigate to http://localhost:8000/shell/</li>
+                        <li>Type
+                            <code class="code">tutorial.start()</code> and press ENTER</li>
+                        <li>Follow steps</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>References</h2>
+
+                    <ul>
+                        <li>https://aws.amazon.com/dynamodb/</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <h2>Thanks!</h2>
+
+                <ul>
+                    <li>
+                        <a href="https://twitter.com/awerlang">Twitter</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/awerlang">GitHub</a>
+                    </li>
+                    <li>
+                        <a href="http://blog.werlangtecnologia.com.br/">Blog</a>
+                    </li>
+                    <li>
+                        <a href="https://medium.com/@awerlang">Medium</a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+    </div>
+
+    <script src="../../assets/lib/js/head.min.js"></script>
+    <script src="../../assets/js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: '../../assets/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+                { src: '../../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                { src: '../../assets/plugin/zoom-js/zoom.js', async: true },
+                { src: '../../assets/plugin/notes/notes.js', async: true }
+            ]
+        });
+    </script>
+
+</body>
+
+</html>
