@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>AsyncHooks API: O recurso que você precisa e não sabia!</title>
+
+    <meta name="description" content="AsyncHooks API: O recurso que você precisa e não sabia!">
+    <meta name="author" content="André Werlang">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../../assets/css/reveal.css">
+    <link rel="stylesheet" href="../../assets/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '../../assets/css/print/pdf.css' : '../../assets/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <script src="../../assets/js/ga.js"></script>
+
+    <style>
+        section {
+            text-align: left;
+        }
+
+        h1,
+        h2,
+        img {
+            text-align: center;
+        }
+
+        .text-center,
+        .text-center td,
+        .text-center th {
+            text-align: center !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-xl {
+            font-size: 64px !important;
+        }
+
+        .back-yellow {
+            background: yellow !important;
+        }
+
+        .img-inline {
+            margin: 0 !important;
+            border: 0 !important;
+            background: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section>
+                <h2>AsyncHooks API: O recurso que você precisa e não sabia!</h2>
+
+                <p class="text-center">
+                    <img src="assets/nodejs.png" alt="">
+                </p>
+                <p style="text-align: center">
+                    <span>André Werlang</span>
+                </p>
+                <p style="text-align: center">
+                    <span>@awerlang</span>
+                </p>
+                <p style="text-align: center">
+                    <span>The Developer's Conference 2017 - Porto Alegre</span>
+                </p>
+            </section>
+
+            <section>
+                <h2>Definition</h2>
+
+                <blockquote>
+                    The async_hooks module provides an API to register callbacks tracking the lifetime of asynchronous resources created inside
+                    a Node.js application
+                </blockquote>
+            </section>
+
+            <section>
+                <h2>The Problem</h2>
+
+                <ul>
+                    <li>Node.js has a single thread on userland.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Incoming Request</h3>
+                <div>
+                    <div style="display:inline-block;height:40px;width:100%;background:blue"></div>
+                </div>
+                <div>
+                    <div style="display:inline-block;height:40px;width:10%"></div>
+                    <div data-fragment-index="1" class="fragment" style="display:inline-block;height:40px;width:40%;background:yellow"></div>
+                    <div style="display:inline-block;height:40px;width:10%"></div>
+                    <div data-fragment-index="2" class="fragment" style="display:inline-block;height:40px;width:30%;background:green"></div>
+                </div>
+                <div>
+                    <div style="display:inline-block;height:40px;width:20%"></div>
+                    <div data-fragment-index="5" class="fragment" style="display:inline-block;height:40px;width:20%;background:yellow"></div>
+                    <div style="display:inline-block;height:40px;width:30%"></div>
+                    <div data-fragment-index="3" class="fragment" style="display:inline-block;height:40px;width:20%;background:green"></div>
+                </div>
+                <div>
+                    <div style="display:inline-block;height:40px;width:80%"></div>
+                    <div data-fragment-index="4" class="fragment" style="display:inline-block;height:40px;width:10%;background:green"></div>
+                </div>
+                <h3 class="fragment text-right">Response</h3>
+            </section>
+
+            <section>
+                <h3>Concurrent Requests</h3>
+                <div>
+                    <div style="display:inline-block;height:40px;width:10%"></div>
+                </div>
+                <div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:10%;background:yellow"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:5%;background:green"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:15%;background:yellow"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:10%;background:blue"></div>
+                    <div style="display:inline-block;height:40px;width:10%"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:10%;background:blue"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:10%;background:green"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:10%;background:yellow"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:5%;background:green"></div>
+                    <div class="fragment" style="display:inline-block;height:40px;width:5%;background:blue"></div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Use Cases</h2>
+
+                <ul>
+                    <li>Monitoring &amp; timing</li>
+                    <li>Diagnostics &amp; tracing</li>
+                    <li>Long stack traces</li>
+                    <li>Continuation local storage</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Stack traces</h2>
+
+                <pre style="width: 100%"><code data-trim class="js">
+Stack trace: ProvisionedThroughputExceededException: The level of configured
+provisioned throughput for the table was exceeded. Consider increasing your
+provisioning level with the UpdateTable API.
+ at Request.extractError (node_modules/aws-sdk/lib/protocol/json.js:43:27)
+ at Request.callListeners (node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+ at Request.emit (node_modules/aws-sdk/lib/request.js:668:14)
+ at Request.transition (node_modules/aws-sdk/lib/request.js:22:10)
+ at AcceptorStateMachine.runTo (node_modules/aws-sdk/lib/state_machine.js:14:12)
+ at node_modules/aws-sdk/lib/state_machine.js:26:10
+ at Request.anonymous (node_modules/aws-sdk/lib/request.js:670:12)
+ at Request.callListeners (node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+ at Request.emit (node_modules/aws-sdk/lib/request.js:668:14)
+ at Request.transition (node_modules/aws-sdk/lib/request.js:22:10)
+ at AcceptorStateMachine.runTo (node_modules/aws-sdk/lib/state_machine.js:14:12)
+ at node_modules/aws-sdk/lib/state_machine.js:26:10
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Steps to enlightment</h2>
+
+                <ul>
+                    <li class="fragment">Step 1: understand code flow</li>
+                    <li class="fragment">Step 2: understand data</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Attempt #1: global data</h2>
+                <pre><code data-trim>
+let currentRequest;
+
+new http.Server(async (req, res) => {
+    currentRequest = req         // <---- save for later
+
+    const delay = +req.url.substr(1)
+    await timeout(delay)
+    respond(res)
+}).listen(8080)
+
+function respond(res) {
+    const req = currentRequest   // <---- retrieve
+
+    res.write('Response for ' + req.url)
+    res.end()
+}</code></pre>
+            </section>
+
+            <section>
+                <p>
+                    GET /8000
+                    <span data-fragment-index="1" class="fragment">&lt;
+                        <img id="resp1s" class="img-inline" src="assets/spinner.gif" alt="" width="30">
+                    </span>
+
+                    <span data-fragment-index="5" id="resp1" class="fragment">Response for 3000</span>
+                    <img data-fragment-index="5" class="fragment img-inline" src="assets/Heat.png" alt="" width="30">
+                </p>
+                <p class="fragment" data-fragment-index="2">
+                    <span> GET /3000</span>
+                    <span data-fragment-index="3" class="fragment">&lt;
+                        <img id="resp2s" class="img-inline" src="assets/spinner.gif" alt="" width="30">
+                    </span>
+                    <span data-fragment-index="4" id="resp2" class="fragment">Response for 3000</span>
+                </p>
+            </section>
+
+            <section class="text-center">
+                <h2>Monkeypatching...</h2>
+
+                <img src="assets/tumblr_nq3kzbpoKe1r2pp2to1_400.gif" width="800">
+            </section>
+
+            <section>
+                <h2>Async Hooks</h2>
+
+                <ul>
+                    <li>From Node.js Diagnostics Working Group</li>
+                    <li>Evolution of prior efforts since 2013</li>
+                    <li>Generic solution to capture any asynchronous activity</li>
+                    <li>Low level api is flexible</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Resources</h2>
+
+                <ul>
+                    <li class="fragment">What is a resource?</li>
+                    <li class="fragment">What asynchronous resources are there?</li>
+                </ul>
+            </section>
+
+            <section>
+                <object data="assets/ResourceLifeCycle.svg" type="image/svg+xml"></object>
+            </section>
+
+            <section>
+                <h2>API</h2>
+
+                <pre><code class="js" data-trim>
+const asyncHooks = require('async_hooks')
+
+function init(id, type, triggerAsyncId, resource) {
+}
+
+function before(id) {
+}
+
+function after(id) {
+}
+
+function destroy(id) {
+}
+
+const hook = asyncHooks.createHook({ init, before, after, destroy })
+hook.enable()
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>AsyncHook solution</h2>
+
+                <pre><code class="js" data-trim>
+requests.track()                     // <---- enable tracking
+
+new http.Server(async (req, res) => {
+    requests.setRequest(req);        // <---- save for later
+    const delay = +req.url.substr(1)
+    await timeout(delay)
+    respond(res)
+}).listen(8080)
+
+function respond(res) {
+    const req = requests.current()    // <---- retrieve
+    res.write('Response for ' + req.url)
+    res.end()
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>AsyncHook solution</h2>
+
+                <pre><code class="js" data-trim>
+const initState = new Map(), prevState = new Map()
+
+function init(id, type, triggerAsyncId, resource) {
+    initState.set(id, currentRequest)
+}
+function before(id) {
+    prevState.set(id, currentRequest)
+    currentRequest = initState.get(id)
+}
+function after(id) {
+    currentRequest = prevState.get(id)
+}
+function destroy(id) {
+    prevState.delete(id)
+    initState.delete(id)
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Prior to Node.js 8</h2>
+
+                <ul>
+                    <li>async-listener</li>
+                    <li>continuation-local-storage</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>References</h2>
+
+                <ul>
+                    <li>https://nodejs.org/api/async_hooks.html</li>
+                    <li>https://www.youtube.com/watch?v=twhQAUd6Z58</li>
+                    <li>https://www.youtube.com/watch?v=UUzGT-g0X70</li>
+                    <li>https://github.com/nodejs/diagnostics/issues/29</li>
+                    <li>https://github.com/nodejs/diagnostics/blob/master/tracing/AsyncWrap/README.md</li>
+                    <li>https://github.com/nodejs/node-eps/blob/master/006-asynchooks-api.md</li>
+                </ul>
+            </section>
+
+            <section class="text-center">
+                <h2>THANKS</h2>
+
+                <a href="https://twitter.com/awerlang">@awerlang</a>
+            </section>
+        </div>
+
+    </div>
+
+    <script src="../../assets/lib/js/head.min.js"></script>
+    <script src="../../assets/js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: '../../assets/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+                { src: '../../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                { src: '../../assets/plugin/zoom-js/zoom.js', async: true },
+                { src: '../../assets/plugin/notes/notes.js', async: true }
+            ]
+        });
+
+        Reveal.addEventListener('fragmentshown', function (event) {
+            var f = event.fragment; // the fragment DOM element
+
+            if (f.id === 'resp1') {
+                var el = document.getElementById('resp1s')
+                el.style.display = 'none';
+            }
+            if (f.id === 'resp2') {
+                var el = document.getElementById('resp2s')
+                el.style.display = 'none';
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
