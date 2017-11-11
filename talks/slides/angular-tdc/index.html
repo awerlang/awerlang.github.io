@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Angular</title>
+
+    <meta name="description" content="Angular">
+    <meta name="author" content="André Werlang">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../../assets/css/reveal.css">
+    <link rel="stylesheet" href="../../assets/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '../../assets/css/print/pdf.css' : '../../assets/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="../../assets/js/ga.js"></script>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section>
+                <h1>Angular</h1>
+
+                <img src="assets/angular.svg" alt="" height="300">
+                <p style="text-align: center">
+                    <span>André Werlang</span>
+                </p>
+                <p style="text-align: center">
+                    <span>@awerlang</span>
+                </p>
+                <p style="text-align: center">
+                    <span>The Developer's Conference 2017 - Porto Alegre</span>
+                </p>
+            </section>
+
+            <section>
+                <h1>Today's Mission</h1>
+
+                <ul>
+                    <li>Remove barrier to TypeScript</li>
+                    <li>Get an app running is easy</li>
+                    <li>Understand how it works</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Agenda</h1>
+
+                <ul>
+                    <li>Myths &amp; Facts</li>
+                    <li>Getting Started</li>
+                    <li>Features</li>
+                    <li>Elements</li>
+                    <li>Final Remarks</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Angular 2 myths</h1>
+
+                <ul>
+                    <li>Requires TypeScript
+                        <span class="fragment myths--truth"></span>
+                    </li>
+                    <li>Doesn't support two-way binding
+                        <span class="fragment myths--false"></span>
+                    </li>
+                    <li>Requires a master's degree on bundling tools
+                        <span class="fragment myths--false"></span>
+                    </li>
+                    <li>View code is VM friendly
+                        <span class="fragment myths--truth"></span>
+                    </li>
+                    <li>Has its own module loading system
+                        <span class="fragment myths--false"></span>
+                    </li>
+                    <li>Run side by side with Angular 1.x
+                        <span class="fragment myths--truth"></span>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Facts</h1>
+
+                <ul>
+                    <li class="fragment">~30k stars on GitHub</li>
+                    <li class="fragment">~7.5k forks on GitHub</li>
+                    <li class="fragment">~2.5k watchers on GitHub</li>
+                    <li class="fragment">&gt; 80k questions on StackOverflow</li>
+                    <li class="fragment">&gt; 14k users on gitter</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Getting Started</h1>
+            </section>
+
+            <section class="powered-by">
+                <h1>Powered By</h2>
+
+                    <figure>
+                        <img data-src="assets/javascript.png" alt="">
+                        <figcaption>JavaScript</figcaption>
+                    </figure>
+                    <figure>
+                        <img data-src="assets/ts.png" alt="">
+                        <figcaption>TypeScript</figcaption>
+                    </figure>
+                    <figure>
+                        <img data-src="assets/Rx_Logo_M.png" alt="">
+                        <figcaption>RxJS</figcaption>
+                    </figure>
+            </section>
+
+            <section>
+                <section>
+                    <h1>TypeScript</h1>
+
+                    <img src="assets/typescript-es.png" class="plain" alt="">
+
+                    <p>
+                        <a href="https://www.typescriptlang.org/">https://www.typescriptlang.org/</a>
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Compiler (tsc)</h1>
+
+                    <ul>
+                        <li>Targets ES5, ES2015, ES2016...</li>
+                        <li>Module generation: ES2015, CommonJS, System...</li>
+                        <li>Emits decorator metadata</li>
+                        <li>Many static checks</li>
+                        <li>Watch mode</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Language</h1>
+
+                    <ul>
+                        <li>Type annotations</li>
+                        <li>Interfaces</li>
+                        <li>Enums</li>
+                        <li>Visibility modifiers</li>
+                        <li>Auto-properties on constructors</li>
+                        <li>Structural compatibility</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Data Types</h1>
+
+                    <ul>
+                        <li>any</li>
+                        <li>string</li>
+                        <li>number</li>
+                        <li>boolean</li>
+                        <li>null</li>
+                        <li>undefined</li>
+                        <li>void</li>
+                        <li>never</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>Migrate from JS</h1>
+
+                    <ul>
+                        <li>Declare external definitions</li>
+                        <li>Add types to every declaration</li>
+                        <li>Create classes for implicit structures</li>
+                        <li>Convert constructor functions to classes</li>
+                        <li>Declare implicit members</li>
+                        <li>(Optional) Convert anonymous functions to arrow syntax</li>
+                        <li>(Optional) Use block-scoped bindings (const, let)</li>
+                    </ul>
+
+                    <p>
+                        <a href="https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html">https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html</a>
+                    </p>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Angular CLI</h1>
+
+                    <p>A command line interface for Angular projects</p>
+
+                    <p>
+                        <img src="assets/cli-logo.svg" alt="" height="300">
+                    </p>
+
+                    <p>
+                        <a href="https://github.com/angular/angular-cli">https://github.com/angular/angular-cli</a>
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Angular CLI</h1>
+                    <h2>Commands</h2>
+
+                    <dl>
+                        <dt>Create component</dt>
+                        <dd>ng g c &lt;component-name&gt;</dd>
+                        <dt>Serve</dt>
+                        <dd>ng serve</dd>
+                        <dt>Build production, offline compiler</dt>
+                        <dd>ng build --prod --aot</dd>
+                        <dt>Linter</dt>
+                        <dd>ng lint</dd>
+                        <dt>Test</dt>
+                        <dd>ng test</dd>
+                    </dl>
+                </section>
+
+                <section data-background="assets/JM.jpg">
+                </section>
+            </section>
+
+            <section>
+                <h1>Features</h1>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Change Detection</h1>
+                </section>
+
+                <section>
+                    <cd-app-root>Loading...</cd-app-root>
+                    <script type="text/javascript" src="assets/cd-app/inline.06b82115387b007e0fc7.bundle.js"></script>
+                    <script type="text/javascript" src="assets/cd-app/main.fd5d57c4fe82becc4cab.bundle.js"></script>
+                    <link href="assets/cd-app/styles.07b22b2962ea872212dd.bundle.css" rel="stylesheet">
+
+                    <p class="fragment interactive">It's interactive! Click on any element!</p>
+                </section>
+
+                <section>
+                    <h1>Takeaways</h1>
+
+                    <ul>
+                        <li class="fragment">Change detection happens top-down</li>
+                        <li class="fragment">Needs to stabilize in a single round</li>
+                        <li class="fragment">Shared, mutable structures is a no-go</li>
+                        <li class="fragment">On Push performs better (and is not that hard!)</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Zones</h1>
+
+                    <img src="assets/Event-loop.png" alt="" height="400">
+
+                    <p>
+                        <a href="https://domenic.github.io/zones/">https://domenic.github.io/zones/</a>
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Zones</h1>
+                    <h2>No more:</h2>
+
+                    <ul>
+                        <li>$q</li>
+                        <li>$timeout</li>
+                        <li>$scope.$apply (well, almost)</li>
+                        <li>$scope.$$phase!!</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <h1>Decorators</h1>
+
+                <p>They augment:</p>
+                <ul>
+                    <li>Classes</li>
+                    <li>Properties</li>
+                    <li>Methods</li>
+                    <li>Parameters</li>
+                </ul>
+
+                <pre class="fragment"><code data-trim>
+@frozen class Foo {
+  @configurable(false) @enumerable(true) method() {}
+}
+                </code></pre>
+
+                <p class="fragment">
+                    <a href="https://tc39.github.io/proposal-decorators/">https://tc39.github.io/proposal-decorators/</a>
+                    <a href="https://www.typescriptlang.org/docs/handbook/decorators.html">https://www.typescriptlang.org/docs/handbook/decorators.html</a>
+                </p>
+            </section>
+
+            <section>
+                <h1>Elements</h1>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Components</h1>
+
+                    <p>
+                        Provides a context for data and events,
+                        <br> supports template, styling,
+                        <br> can have services injected
+                        <br> and is change detected
+                    </p>
+
+                    <p>* A directive is a component with no template.</p>
+                </section>
+
+                <section>
+                    <h1>Components</h1>
+
+                    <pre><code data-trim>
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  topics = ['commits', 'branches', 'remotes'];
+  actions = ['list', 'create', 'delete'];
+
+  onGoClick() {
+    // TODO
+  }
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Components</h1>
+                    <h2>Inputs &amp; Outputs</h2>
+
+                    <pre><code data-trim>
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'my-component',
+  templateUrl: './my.component.html',
+  styleUrls: ['./my.component.css']
+})
+export class MyComponent {
+  @Input() input: DataType;
+
+  @Output() event = new EventEmitter&lt;DataType&gt;(false);
+
+  onEvent(value) {
+      this.event.emit(value);
+  }
+}
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Templates</h1>
+
+                    <p>
+                        Composes the view with an HTML-like syntax,
+                        <br> interpolates text and data, binds events,
+                        <br> and includes other components.
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Templates</h1>
+
+                    <pre><code data-trim>
+&lt;md-chip-list&gt;
+  &lt;md-chip *ngFor="let topic of topics"&gt;{{topic}}&lt;/md-chip&gt;
+&lt;/md-chip-list&gt;
+
+&lt;button md-button color="primary" (click)="onGoClick()"&gt;Go!&lt;/button&gt;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Templates</h1>
+                    <h2>Inputs &amp; Outputs</h2>
+
+                    <pre><code data-trim>
+                        &lt;input #myInput [value]="input" (change)="myInput.value"&gt;
+                    </code></pre>
+
+                    <pre><code data-trim>
+                        &lt;input [(ngModel)]="field"&gt;
+                    </code></pre>
+                </section>
+            </section>
+
+            </section>
+
+            <section>
+                <section>
+                    <h1>Styling</h1>
+
+                    <p>
+                        Styles a component view, supports view encapsulation.
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Styling</h1>
+
+                    <pre><code data-trim>
+:host {
+    display: block;
+    max-width: 500px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+.go {
+    margin-top: 8px;
+    float: right;
+}
+
+md-divider {
+    clear: both;
+}
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Animations</h1>
+
+                    <p>
+                        Declarative transitions and animations,
+                        <br> with state triggers and synchornization support.
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Animations</h1>
+
+                    <pre><code data-trim>
+animations: [
+  trigger('flyInOut', [
+    state('in', style({transform: 'translateX(0)'})),
+    transition('void => *', [
+      style({transform: 'translateX(-100%)'}),
+      animate(100)
+    ]),
+    transition('* => void', [
+      animate(100, style({transform: 'translateX(100%)'}))
+    ])
+  ])
+]
+                    </code></pre>
+
+                    <pre><code data-trim>
+                        &lt;md-chip *ngFor="let topic of topics" [@flyInOut]="'in'"&gt;...&lt;/md-chip&gt;
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Services</h1>
+
+                    <p>
+                        Encapsulates business logic
+                        <br> and shares data among components
+                    </p>
+                </section>
+
+                <section>
+                    <h1>Services</h1>
+
+                    <pre><code data-trim>
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class TipsService {
+    match(topic, action) {
+        // TODO
+    }
+}
+                    </code></pre>
+
+                    <pre><code data-trim>
+import { TipsService } from './tips.service';
+
+export class AppComponent {
+  constructor(private tips: TipsService) { }
+
+  onGoClick() {
+    const matchingTips = this.tips.match(this.topic, this.action);
+  }
+}
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>NgModules</h1>
+
+                    <p>
+                        Organizes elements and creates reusable modules.
+                    </p>
+                </section>
+
+                <section>
+                    <h1>NgModules</h1>
+
+                    <pre><code data-trim>
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { MaterialModule } from '@angular/material';
+import { AppComponent } from './app.component';
+import { TipsService } from './tips.service';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    MaterialModule.forRoot(),
+  ],
+  providers: [TipsService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <section>
+                    <h1>Testing</h1>
+                </section>
+
+                <section>
+                    <h1>Components</h1>
+
+                    <pre><code data-trim>
+beforeEach(() => {
+  TestBed.configureTestingModule({
+    imports: [
+      MaterialModule.forRoot(),
+    ],
+    declarations: [
+      AppComponent
+    ],
+    providers: [{ provide: TipsService, useValue: tipsService }],
+  });
+  TestBed.compileComponents();
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Components</h1>
+
+                    <pre><code data-trim>
+it('should render results', async(() => {
+  const topicChip: DebugElement = fixture.debugElement
+    .query(By.css('.topics')).query(By.directive(MdChip));
+  const actionChip: DebugElement = fixture.debugElement
+    .query(By.css('.actions')).query(By.directive(MdChip));
+
+  topicChip.triggerEventHandler('click', null);
+  actionChip.triggerEventHandler('click', null);
+
+  goBtn.triggerEventHandler('click', null);
+  fixture.detectChanges();
+
+  expect(el.querySelector('h4').textContent).toEqual('One tip found');
+}));
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Services</h1>
+
+                    <pre><code data-trim>
+let service = new TipsService();
+beforeEach(() => {
+    service = new TipsService();
+});
+
+describe('getTopics', () => {
+    it('should work', () => {
+        expect(service.getTopics())
+            .toEqual(['changes', 'branches', 'commits', 'remotes']);
+    });
+});
+                    </code></pre>
+                </section>
+            </section>
+
+            <section>
+                <h1>Standard Modules</h1>
+
+                <ul>
+                    <li>Http</li>
+                    <li>Forms</li>
+                    <li>Router</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Final Remarks</h1>
+            </section>
+
+            <section>
+                <h1>Platforms</h1>
+
+                <ul>
+                    <li>Progressive Web Apps</li>
+                    <li>Angular Universal</li>
+                    <li>Ionic</li>
+                    <li>NativeScript</li>
+                    <li>ReactNative</li>
+                </ul>
+
+                <p>
+                    <a href="https://angular.io/resources/">https://angular.io/resources/</a>
+                </p>
+            </section>
+
+            <section>
+                <h1>UI Components</h1>
+
+                <ul>
+                    <li>Material</li>
+                    <li>Bootstrap</li>
+                    <li>Lightning</li>
+                    <li>Semantic UI</li>
+                    <li>PrimeNG</li>
+                    <li>Kendo UI</li>
+                    <li>wijmo</li>
+                </ul>
+
+                <p>
+                    <a href="https://angular.io/resources/">https://angular.io/resources/</a>
+                </p>
+            </section>
+
+            <section>
+                <h1>State Containers</h1>
+
+                <ul>
+                    <li>
+                        <a href="https://github.com/ngrx/store">ngrx/store &amp; friends</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/angular-redux/ng2-redux">ng2-redux</a>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Recommendations</h1>
+
+                <ul>
+                    <li>Employ a redux architecture</li>
+                    <li>Use unidirectional data flow (OnPush strategy)</li>
+                    <li>Learn about containers &amp; presentational components</li>
+                    <li>Turn on static checks for TypeScript</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Obrigado!</h2>
+
+                <a href="https://twitter.com/awerlang">@awerlang</a><br>
+                <a href="https://github.com/awerlang/angular-show-off">https://github.com/awerlang/angular-show-off</a>
+            </section>
+
+        </div>
+
+    </div>
+
+    <script src="../../assets/lib/js/head.min.js"></script>
+    <script src="../../assets/js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: '../../assets/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+                { src: '../../assets/plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../assets/plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../assets/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                { src: '../../assets/plugin/zoom-js/zoom.js', async: true },
+                { src: '../../assets/plugin/notes/notes.js', async: true }
+            ]
+        });
+    </script>
+
+</body>
+
+</html>
