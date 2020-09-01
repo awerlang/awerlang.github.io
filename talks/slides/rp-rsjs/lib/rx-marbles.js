@@ -33,26 +33,25 @@
         var MarbleComponent = _interopRequire(require("rxmarbles/components/marble"));
         var DiagramCompletionComponent = _interopRequire(require("rxmarbles/components/diagram-completion"));
         var h = Cycle.h;
-        var SandboxPrototype = Object.create(HTMLElement.prototype);
-        SandboxPrototype.createdCallback = function createdCallback() {
-            var key = this.attributes.key.value;
-            Cycle.registerCustomElement("x-marble", MarbleComponent);
-            Cycle.registerCustomElement("x-diagram-completion", DiagramCompletionComponent);
-            Cycle.registerCustomElement("x-diagram", DiagramComponent);
-            Cycle.registerCustomElement("x-sandbox", SandboxComponent);
-            var Renderer = Cycle.createRenderer(this);
-            var View = Cycle.createView(function() {
-                return {
-                    vtree$: Cycle.Rx.Observable.just(h("x-sandbox", {
-                        route: key
-                    }))
-                }
-            });
-            Renderer.inject(View)
-        };
-        var XRxMarbles = document.registerElement("rx-marbles", {
-            prototype: SandboxPrototype
-        })
+        class SandboxPrototype extends HTMLElement {
+            connectedCallback() {
+                var key = this.attributes.key.value;
+                Cycle.registerCustomElement("x-marble", MarbleComponent);
+                Cycle.registerCustomElement("x-diagram-completion", DiagramCompletionComponent);
+                Cycle.registerCustomElement("x-diagram", DiagramComponent);
+                Cycle.registerCustomElement("x-sandbox", SandboxComponent);
+                var Renderer = Cycle.createRenderer(this);
+                var View = Cycle.createView(function() {
+                    return {
+                        vtree$: Cycle.Rx.Observable.just(h("x-sandbox", {
+                            route: key
+                        }))
+                    }
+                });
+                Renderer.inject(View)
+            };
+        }
+        var XRxMarbles = customElements.define("rx-marbles", SandboxPrototype);
     }, {
         cyclejs: 51,
         "rxmarbles/components/diagram-completion": 61,
